@@ -1,11 +1,11 @@
 using namespace std;
 #include <iostream>
-#include "A/A.cpp"
-#include "B/A.cpp"
+//#include "A/A.cpp"
+//#include "B/A.cpp"
+//#include "B/A.cpp"
+#include "03/A.cpp"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-//    A::test();
-    B::test();
+    A03::test();
     return 0;
 }
