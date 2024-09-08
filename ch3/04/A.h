@@ -5,9 +5,6 @@
 #ifndef UNTITLED_A_H
 #define UNTITLED_A_H
 
-
-
-
 class A {};
 
 class B {

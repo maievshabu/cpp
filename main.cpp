@@ -3,11 +3,18 @@ using namespace std;
 //#include "A/A.cpp"
 //#include "B/A.cpp"
 //#include "B/A.cpp"
-//#include "04/A.cpp"
+//#include "ch3/03/A.cpp"
+//#include "ch3/04/A.cpp"
 //#include "ch3/05/A.cpp"
-#include "ch3/06/A.cpp"
+//#include "ch3/06/A.cpp"
+//#include "ch3/07/A.cpp"
+//#include "ch3/08/A.cpp"
+
+//#include "ch6/01/A.cpp"
+#include "ch6/02/A.cpp"
 
 int main() {
-    A06::test();
+
+    ch602::test();
     return 0;
 }
