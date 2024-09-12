@@ -10,7 +10,13 @@
 
 namespace ch602{
     class A {
-
+    public:
+        A() = default;
+        A(int i) : _i(i){}
+        A(const A &) = delete;
+        void show() { std::cout <<"A:::" << _i << std::endl;}
+    private:
+        int _i;
     };
 
     int test();
@@ -39,5 +45,33 @@ namespace ch602{
     };
 
     template<> class Ttuple<>{};
+
+    class ConvType{
+    public:
+        ConvType(int i) {};
+        explicit ConvType(char c)= delete;
+    };
+
+    void Func(ConvType ct) { std::cout << "Func" << std::endl;}
+
+    class NoHeapAlloc{
+    public:
+        void *operator new (std::size_t) = delete;
+    };
+
+    class _functor{
+    public:
+        int operator () (int x, int y) { return x + y;}
+    };
+
+    class Tax{
+    private:
+        float rate;
+        int base;
+    public:
+        Tax( float r, int b) : rate(r),base(b){}
+        float operator () (float money) { return (money - base) * rate;}
+    };
+
 }
 #endif //UNTITLED_A_H
