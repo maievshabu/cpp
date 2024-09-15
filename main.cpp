@@ -11,10 +11,11 @@ using namespace std;
 //#include "ch3/08/A.cpp"
 
 //#include "ch6/01/A.cpp"
-#include "ch6/02/A.cpp"
+//#include "ch6/02/A.cpp"
+#include "ch6/03/A.cpp"
 
 int main() {
 
-    ch602::test();
+    ch603::test();
     return 0;
 }
