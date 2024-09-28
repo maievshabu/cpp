@@ -13,7 +13,7 @@
 int xx(void)
 {
 
-//create
+    //create
     int fd_s, fd_c;
 
     char buffersize[1024] = {0};
@@ -51,7 +51,7 @@ int xx(void)
     //accept
     fd_c = accept(fd_s, (struct sockaddr *)&addr_c, &client_len);
     if (fd_c < 0){
-        perror("bind error");
+        perror("accept error");
         close(fd_s);
         exit(EXIT_FAILURE);
     }

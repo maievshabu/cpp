@@ -13,6 +13,7 @@ int xx()
     struct sockaddr_in addr;
     char buff[1024] = {0};
 
+    //create
     int fd = socket(AF_INET, SOCK_STREAM, 0);
 
     if (fd < 0){
