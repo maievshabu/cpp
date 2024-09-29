@@ -1,9 +1,9 @@
 //
-// Created by xiaowei003 on 2024/9/12.
+// Created by xiaowei003 on 2024/9/29.
 //
 
-#ifndef UNTITLED_SERVE_H
-#define UNTITLED_SERVE_H
+#ifndef UNTITLED_SOCKET_HPP
+#define UNTITLED_SOCKET_HPP
 
 #include <string>
 #include <sys/socket.h>
@@ -18,22 +18,30 @@
 #include <exception>
 using namespace std;
 
-namespace maiev{
-    class Socket{
+namespace maiev {
+    class Socket {
     private:
         int _fd;
-        int _client_fd;
         unsigned int _port;
     public:
-        Socket(unsigned int );
+        Socket(unsigned int);
+
         Socket();
+
         void bind();
+
         void listen();
+
         int accept();
+
         void recv(int fd);
-        void connect(char const * host, unsigned int);
-        ssize_t send(char const * msg);
-        int getFd() { return _fd;};
+
+        void connect(char const *host, unsigned int);
+
+        ssize_t send(char const *msg);
+
+        int getFd() { return _fd; };
+
         ~Socket();
     };
 
@@ -53,13 +61,13 @@ namespace maiev{
     void Socket::bind() {
         cout << "socket bind :" << _port << endl;
         struct sockaddr_in addr;
-        memset(&addr, 0 , sizeof(addr));
+        memset(&addr, 0, sizeof(addr));
         addr.sin_addr.s_addr = INADDR_ANY;
         addr.sin_family = AF_INET;
         addr.sin_port = htons(_port);
 
-        int flag = ::bind(_fd, (struct sockaddr*) &addr, sizeof(addr));
-        if (flag == -1){
+        int flag = ::bind(_fd, (struct sockaddr *) &addr, sizeof(addr));
+        if (flag == -1) {
             throw runtime_error(std::string(strerror(errno)));
         }
     }
@@ -68,7 +76,7 @@ namespace maiev{
     void Socket::listen() {
         cout << "socket listen:" << _fd << endl;
         int flag = ::listen(_fd, 3);
-        if (flag == -1){
+        if (flag == -1) {
             throw runtime_error("listen error:");
         }
     }
@@ -79,9 +87,9 @@ namespace maiev{
         memset(&addr, 0, sizeof(addr));
         cout << "socket accept:" << endl;
         socklen_t client_len = sizeof(addr);
-        _client_fd = ::accept(_fd, (struct sockaddr*) & addr, &client_len);
+        _client_fd = ::accept(_fd, (struct sockaddr *) &addr, &client_len);
 
-        if (_client_fd == -1){
+        if (_client_fd == -1) {
             throw runtime_error("accept error:" + std::string(strerror(errno)));
         }
 
@@ -91,17 +99,18 @@ namespace maiev{
     //recv
     void Socket::recv(int fd) {
         char msg[1024] = {0};
-        while(true){
+        while (true) {
             ssize_t received = ::recv(fd, msg, sizeof(msg), 0);
-            if (received == -1){
+            if (received == -1) {
                 throw runtime_error("accept error:");
             }
 
             std::string recv_msg = std::string(msg, received);
             cout << "recv msg from :" << fd << "and msg:" << recv_msg << endl;
-            recv_msg.erase(std::remove_if(recv_msg.begin(), recv_msg.end(), ::isspace), recv_msg.end()); // Remove whitespace
+            recv_msg.erase(std::remove_if(recv_msg.begin(), recv_msg.end(), ::isspace),
+                           recv_msg.end()); // Remove whitespace
 
-            if (recv_msg.compare("end") == 0){
+            if (recv_msg.compare("end") == 0) {
                 break;
             }
 
@@ -109,24 +118,23 @@ namespace maiev{
         }
     }
 
-    void Socket::connect(char const * host, unsigned int port) {
+    void Socket::connect(char const *host, unsigned int port) {
         struct sockaddr_in addr;
         memset(&addr, 0, sizeof(addr));
         addr.sin_family = AF_INET;
         addr.sin_port = htons(port);
         inet_pton(AF_INET, host, &addr.sin_addr);
 
-        int flag = ::connect(_fd, (struct sockaddr*)&addr, sizeof(addr));
+        int flag = ::connect(_fd, (struct sockaddr *) &addr, sizeof(addr));
 
-        if (flag == -1){
+        if (flag == -1) {
             throw runtime_error("err" + std::string(strerror(errno)));
         }
     }
 
-    ssize_t Socket::send(char const * message)
-    {
+    ssize_t Socket::send(char const *message) {
         ssize_t send_bytes = ::send(_fd, message, strlen(message), 0);
-        if (send_bytes < 0){
+        if (send_bytes < 0) {
             throw runtime_error("err:" + std::string(strerror(errno)));
         }
 
@@ -140,35 +148,7 @@ namespace maiev{
         cout << "~socket!" << endl;
         close(_fd);
     }
-
-    void test_server()
-    {
-        try{
-            Socket st(12340);
-            st.bind();
-            st.listen();
-            int _fd = st.accept();
-            st.recv(_fd);
-        }catch(exception const & e){
-            cout << "error:" << e.what() << endl;
-        }
-    }
-
-    void test_client()
-    {
-        try{
-            char const* msg = "hello world!!!";
-            Socket st;
-            st.connect("127.0.0.1", 12340);
-            st.send(msg);
-        }catch(exception const & e){
-            cout << "error:" << e.what() << endl;
-        }
-    }
 }
 
-int main()
-{
-    maiev::test_server();
-    return 0;
-}
+
+#endif //UNTITLED_SOCKET_HPP
