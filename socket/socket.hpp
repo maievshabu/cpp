@@ -16,8 +16,6 @@
 #include <cerrno>
 #include <algorithm>
 #include <exception>
-using namespace std;
-
 namespace maiev {
     class Socket {
     private:
@@ -39,6 +37,12 @@ namespace maiev {
         void connect(char const *host, unsigned int);
 
         ssize_t send(char const *msg);
+
+        ssize_t send(int fd, char const *msg);
+
+        void close();
+
+        ssize_t read();
 
         int getFd() { return _fd; };
 
@@ -85,13 +89,14 @@ namespace maiev {
     int Socket::accept() {
         struct sockaddr_in addr;
         memset(&addr, 0, sizeof(addr));
-        cout << "socket accept:" << endl;
         socklen_t client_len = sizeof(addr);
-        _client_fd = ::accept(_fd, (struct sockaddr *) &addr, &client_len);
+        int _client_fd = ::accept(_fd, (struct sockaddr *) &addr, &client_len);
 
         if (_client_fd == -1) {
             throw runtime_error("accept error:" + std::string(strerror(errno)));
         }
+
+        cout << "socket accept from :" << _client_fd << endl;
 
         return _client_fd;
     }
@@ -102,7 +107,12 @@ namespace maiev {
         while (true) {
             ssize_t received = ::recv(fd, msg, sizeof(msg), 0);
             if (received == -1) {
-                throw runtime_error("accept error:");
+                throw runtime_error("receive-error:"  + std::string(strerror(errno)));
+            }
+
+            if (received == 0){
+                cout << "no msg received" << endl;
+                break;
             }
 
             std::string recv_msg = std::string(msg, received);
@@ -111,10 +121,14 @@ namespace maiev {
                            recv_msg.end()); // Remove whitespace
 
             if (recv_msg.compare("end") == 0) {
+                cout << "end " << endl;
                 break;
             }
 
             std::fill(std::begin(msg), std::end(msg), 0);
+            std::string resp = "response :" + std::to_string(fd) + recv_msg;
+            char const * cresp = resp.c_str();
+            send(fd, cresp);
         }
     }
 
@@ -127,8 +141,7 @@ namespace maiev {
 
         int flag = ::connect(_fd, (struct sockaddr *) &addr, sizeof(addr));
 
-        if (flag == -1) {
-            throw runtime_error("err" + std::string(strerror(errno)));
+        if (flag == -1) { throw runtime_error("err" + std::string(strerror(errno)));
         }
     }
 
@@ -143,12 +156,55 @@ namespace maiev {
         return send_bytes;
     }
 
+    ssize_t Socket::send(int fd, char const *message) {
+        ssize_t send_bytes = ::send(fd, message, strlen(message), 0);
+        if (send_bytes < 0) {
+            throw runtime_error("err:" + std::string(strerror(errno)));
+        }
+
+        cout << "send bytes : " << send_bytes << " to : fd" << _fd << endl;
+
+        return send_bytes;
+    }
+
+    void Socket::close()
+    {
+        cout << "close connect" << endl;
+        //::close(_fd);
+    }
+
+    ssize_t Socket::read() {
+        char buff[1024] = {0};
+        ssize_t bytes_read = ::read(_fd, buff, sizeof(buff) - 1);
+        cout <<" read data :" << buff << endl;
+        if (bytes_read == -1){
+            throw runtime_error("read error:" + std::string(strerror(errno)));
+        }
+
+        return bytes_read;
+    }
+
     //unconnect
     Socket::~Socket() {
         cout << "~socket!" << endl;
-        close(_fd);
+        ::close(_fd);
     }
 }
 
+using namespace maiev;
+int main(void){
+    try{
+        Socket st(12340);
+        st.bind();
+        st.listen();
+        int _fd = st.accept();
+        st.recv(_fd);
+        st.close();
+    }catch(exception const & e){
+        cout << "error:" << e.what() << endl;
+    }
+
+    return 0;
+}
 
 #endif //UNTITLED_SOCKET_HPP

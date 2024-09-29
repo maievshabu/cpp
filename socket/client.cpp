@@ -58,6 +58,8 @@ int xx()
         Socket st;
         st.connect("127.0.0.1", 12340);
         st.send(msg);
+        st.read(fd);
+        st.close();
     }catch(exception const & e){
         cout << "error:" << e.what() << endl;
     }

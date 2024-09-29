@@ -71,6 +71,7 @@ int xx(void)
         st.listen();
         int _fd = st.accept();
         st.recv(_fd);
+        st.close();
     }catch(exception const & e){
         cout << "error:" << e.what() << endl;
     }
