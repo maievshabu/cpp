@@ -15,16 +15,16 @@ using namespace std;
 //#include "ch6/03/A.cpp"
 
 //#include "ch7/01/A.cpp"
-//#include "ch8/01/A.cpp"
 
+#include "ch8/01/A.cpp"
 #include "stl/array/array.cpp"
+#include "mysql/conn.cpp"
 
 int main() {
 
 //    ch701::test();
-//    ch801::maiev_test();
-
     stl::test_array();
+//    test_mysql();
 
     return 0;
 }

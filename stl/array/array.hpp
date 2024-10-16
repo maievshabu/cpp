@@ -10,11 +10,14 @@
 #include "array_iterator.hpp"
 
 namespace stl {
+
+
     template<typename T, size_t N>
     class array {
     public:
         //member function
-        typedef array_iterator<T> iterator;
+//        typedef array_iterator<T> iterator;
+        using iterator = array_iterator<T>;
 
         array();
         array(std::initializer_list<T>);
@@ -35,11 +38,13 @@ namespace stl {
         //operations
         void  fill(int val);
         void swap(array &other);
+
         iterator begin();
         iterator end();
     private:
         T elem[N];
     };
+
 
     template <typename T, size_t N>
     array<T, N>::array() {
@@ -116,13 +121,13 @@ namespace stl {
     }
 
     template <typename T, size_t N>
-    array_iterator<T> array<T, N>::begin()
+    typename array<T,N>::iterator array<T, N>::begin()
     {
         return array_iterator<T>(elem);
     }
 
     template <typename T, size_t N>
-    array_iterator<T> array<T, N>::end()
+    typename array<T,N>::iterator array<T, N>::end()
     {
         return array_iterator<T>(elem + N) ;
     }
