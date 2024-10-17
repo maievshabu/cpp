@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/STL.dir/main.cpp.o CMakeFiles/STL.dir/stl.cpp.o -o /mnt/c/work/untitled/src/bin/STL  /mnt/c/work/untitled/src/lib64/libCALC-STATIC.a 

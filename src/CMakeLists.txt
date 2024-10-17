@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.15)
+project(src)
+set(SOURCE_HOME ${CMAKE_CURRENT_SOURCE_DIR})
+message(STATUS "-----------------------")
+message(STATUS "SOURCE_HOME:${SOURCE_HOME}")
+message(STATUS "${CMAKE_CURRENT_SOURCE_DIR}")
+message(STATUS "${CMAKE_CURRENT_BINARY_DIR}")
+message(STATUS "${PROJECT_BINARY_DIR}")
+message(STATUS "${CMAKE_MODULE_PATH}")
+message(STATUS "-----------------------")
+
+#add_subdirectory(calc)
+add_subdirectory(stl)
