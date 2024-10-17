@@ -117,17 +117,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named STL
+# Target rules for targets named TEST
 
 # Build rule for target.
-STL: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 STL
-.PHONY : STL
+TEST: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 TEST
+.PHONY : TEST
 
 # fast build rule for target.
-STL/fast:
-	$(MAKE) $(MAKESILENT) -f src/stl/CMakeFiles/STL.dir/build.make src/stl/CMakeFiles/STL.dir/build
-.PHONY : STL/fast
+TEST/fast:
+	$(MAKE) $(MAKESILENT) -f src/test/CMakeFiles/TEST.dir/build.make src/test/CMakeFiles/TEST.dir/build
+.PHONY : TEST/fast
 
 # Help Target
 help:
@@ -137,7 +137,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... STL"
+	@echo "... TEST"
 .PHONY : help
 
 

@@ -14,8 +14,29 @@
 # EXTERNAL cache entries
 ########################
 
+//The directory containing a CMake configuration file for CALCT.
+CALCT_DIR:PATH=/mnt/c/work/untitled/src/lib64/cmake
+
+//The directory containing a CMake configuration file for CALCTargets.
+CALCTargets_DIR:PATH=CALCTargets_DIR-NOTFOUND
+
+//Value Computed by CMake
+CALC_BINARY_DIR:STATIC=/mnt/c/work/untitled/build/src/calc
+
+//The directory containing a CMake configuration file for CALC.
+CALC_DIR:PATH=/mnt/c/work/untitled/src/lib64/cmake
+
+//Value Computed by CMake
+CALC_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CALC_SOURCE_DIR:STATIC=/mnt/c/work/untitled/src/calc
+
 //Path to a library.
-CALC_LIB:FILEPATH=/mnt/c/work/untitled/src/lib64/libCALC-STATIC.a
+CALCxx:FILEPATH=CALCxx-NOTFOUND
+
+//The directory containing a CMake configuration file for CALCxx.
+CALCxx_DIR:PATH=/mnt/c/work/untitled/src/lib64/cmake
 
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=/usr/bin/addr2line
@@ -219,13 +240,13 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Value Computed by CMake
-STL_BINARY_DIR:STATIC=/mnt/c/work/untitled/build/src/stl
+TEST_BINARY_DIR:STATIC=/mnt/c/work/untitled/build/src/test
 
 //Value Computed by CMake
-STL_IS_TOP_LEVEL:STATIC=OFF
+TEST_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-STL_SOURCE_DIR:STATIC=/mnt/c/work/untitled/src/stl
+TEST_SOURCE_DIR:STATIC=/mnt/c/work/untitled/src/test
 
 //Value Computed by CMake
 src_BINARY_DIR:STATIC=/mnt/c/work/untitled/build/src

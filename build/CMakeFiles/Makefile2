@@ -78,57 +78,57 @@ clean: src/clean
 # Directory level rules for directory src
 
 # Recursive "all" directory target.
-src/all: src/stl/all
+src/all: src/test/all
 .PHONY : src/all
 
 # Recursive "preinstall" directory target.
-src/preinstall: src/stl/preinstall
+src/preinstall: src/test/preinstall
 .PHONY : src/preinstall
 
 # Recursive "clean" directory target.
-src/clean: src/stl/clean
+src/clean: src/test/clean
 .PHONY : src/clean
 
 #=============================================================================
-# Directory level rules for directory src/stl
+# Directory level rules for directory src/test
 
 # Recursive "all" directory target.
-src/stl/all: src/stl/CMakeFiles/STL.dir/all
-.PHONY : src/stl/all
+src/test/all: src/test/CMakeFiles/TEST.dir/all
+.PHONY : src/test/all
 
 # Recursive "preinstall" directory target.
-src/stl/preinstall:
-.PHONY : src/stl/preinstall
+src/test/preinstall:
+.PHONY : src/test/preinstall
 
 # Recursive "clean" directory target.
-src/stl/clean: src/stl/CMakeFiles/STL.dir/clean
-.PHONY : src/stl/clean
+src/test/clean: src/test/CMakeFiles/TEST.dir/clean
+.PHONY : src/test/clean
 
 #=============================================================================
-# Target rules for target src/stl/CMakeFiles/STL.dir
+# Target rules for target src/test/CMakeFiles/TEST.dir
 
 # All Build rule for target.
-src/stl/CMakeFiles/STL.dir/all:
-	$(MAKE) $(MAKESILENT) -f src/stl/CMakeFiles/STL.dir/build.make src/stl/CMakeFiles/STL.dir/depend
-	$(MAKE) $(MAKESILENT) -f src/stl/CMakeFiles/STL.dir/build.make src/stl/CMakeFiles/STL.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/work/untitled/build/CMakeFiles --progress-num=1,2,3 "Built target STL"
-.PHONY : src/stl/CMakeFiles/STL.dir/all
+src/test/CMakeFiles/TEST.dir/all:
+	$(MAKE) $(MAKESILENT) -f src/test/CMakeFiles/TEST.dir/build.make src/test/CMakeFiles/TEST.dir/depend
+	$(MAKE) $(MAKESILENT) -f src/test/CMakeFiles/TEST.dir/build.make src/test/CMakeFiles/TEST.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/mnt/c/work/untitled/build/CMakeFiles --progress-num=1,2 "Built target TEST"
+.PHONY : src/test/CMakeFiles/TEST.dir/all
 
 # Build rule for subdir invocation for target.
-src/stl/CMakeFiles/STL.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/work/untitled/build/CMakeFiles 3
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/stl/CMakeFiles/STL.dir/all
+src/test/CMakeFiles/TEST.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/work/untitled/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/test/CMakeFiles/TEST.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/work/untitled/build/CMakeFiles 0
-.PHONY : src/stl/CMakeFiles/STL.dir/rule
+.PHONY : src/test/CMakeFiles/TEST.dir/rule
 
 # Convenience name for target.
-STL: src/stl/CMakeFiles/STL.dir/rule
-.PHONY : STL
+TEST: src/test/CMakeFiles/TEST.dir/rule
+.PHONY : TEST
 
 # clean rule for target.
-src/stl/CMakeFiles/STL.dir/clean:
-	$(MAKE) $(MAKESILENT) -f src/stl/CMakeFiles/STL.dir/build.make src/stl/CMakeFiles/STL.dir/clean
-.PHONY : src/stl/CMakeFiles/STL.dir/clean
+src/test/CMakeFiles/TEST.dir/clean:
+	$(MAKE) $(MAKESILENT) -f src/test/CMakeFiles/TEST.dir/build.make src/test/CMakeFiles/TEST.dir/clean
+.PHONY : src/test/CMakeFiles/TEST.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

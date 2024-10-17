@@ -6,9 +6,13 @@ add_library(CALC SHARED Calc.cpp)
 add_library(CALC-STATIC STATIC Calc.cpp)
 message(STATUS "calc-SOURCE_HOME:${SOURCE_HOME}")
 install(FILES Calc.h DESTINATION ${SOURCE_HOME}/include)
-#install(TARGETS CALC DESTINATION ${SOURCE_HOME}/lib64)
-#install(TARGETS CALC-STATIC DESTINATION ${SOURCE_HOME}/lib64)
 
-install(TARGETS CALC CALC-STATIC DESTINATION
-        ${SOURCE_HOME}/lib64
+install(TARGETS CALC CALC-STATIC
+        EXPORT CALCTargets
+        DESTINATION ${SOURCE_HOME}/lib64
+        )
+install(EXPORT CALCTargets
+        FILE CALCConfig.cmake
+        NAMESPACE CALC::
+        DESTINATION ${SOURCE_HOME}/lib64/cmake
         )
