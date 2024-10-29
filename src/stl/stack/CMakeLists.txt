@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.15)
+project(STACK)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED true)
+message(STATUS "THIS IS A  STACK ")
+set(SRC stack.cpp)
+add_executable(STACK ${SRC})

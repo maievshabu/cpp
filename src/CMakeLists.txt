@@ -11,5 +11,5 @@ message(STATUS "-----------------------")
 set(EXECUTABLE_OUTPUT_PATH ${SOURCE_HOME}/bin)
 
 #add_subdirectory(calc)
-#add_subdirectory(stl)
-add_subdirectory(test)
+add_subdirectory(stl)
+#add_subdirectory(test)

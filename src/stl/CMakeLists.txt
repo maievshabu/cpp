@@ -7,6 +7,8 @@ set(SRC_LIST main.cpp stl.cpp)
 set(LIB ${SOURCE_HOME}/lib64)
 message(STATUS "LIB:${LIB}")
 
+add_subdirectory(stack)
+
 include_directories(${LIB})
 
 add_executable(STL ${SRC_LIST})
