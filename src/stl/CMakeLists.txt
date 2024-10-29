@@ -8,6 +8,7 @@ set(LIB ${SOURCE_HOME}/lib64)
 message(STATUS "LIB:${LIB}")
 
 add_subdirectory(stack)
+add_subdirectory(iterator)
 
 include_directories(${LIB})
 
