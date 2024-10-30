@@ -12,4 +12,5 @@ set(EXECUTABLE_OUTPUT_PATH ${SOURCE_HOME}/bin)
 
 #add_subdirectory(calc)
 add_subdirectory(stl)
+add_subdirectory(leetcode)
 #add_subdirectory(test)
