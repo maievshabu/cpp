@@ -68,9 +68,10 @@ public:
             }
 
             if (*it1 != *it2){ //都
-                ++d;
+                break;
             }
 
+            ++d;
             ++it1;
             ++it2;
         }
@@ -81,7 +82,7 @@ public:
 void test()
 {
     A a;
-    string word1("horse"), word2("ros");
+    string word1("sea"), word2("eat");
     int d = a.minDistance(word1, word2);
 
     cout << "the distance between " << word1;
