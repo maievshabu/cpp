@@ -13,14 +13,21 @@ public:
 };
 
 template <typename Container>
-void PRINT_CONTAINER(Container container, const std::string msg = ": ")
+void PRINT_CONTAINER(Container container, const std::string outstr = ": ")
 {
-    using Iterator = typename Container::iterator;
-    std::cout << msg ;
-    for (Iterator it = container.begin(); it != container.end(); ++it) {
-        std::cout << *it << " ";
+    std::cout << outstr << " ";
+    for( const auto& elem : container){
+        std::cout << elem << " ";
     }
+
     std::cout << std::endl;
+
+//    using Iterator = typename Container::iterator;
+//    std::cout << msg ;
+//    for (Iterator it = container.begin(); it != container.end(); ++it) {
+//        std::cout << *it << " ";
+//    }
+//    std::cout << std::endl;
 }
 
 

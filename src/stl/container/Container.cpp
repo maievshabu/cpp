@@ -1,0 +1,179 @@
+//
+// Created by xiaowei003 on 2024/11/1.
+//
+
+#include "Container.h"
+#include <iostream>
+#include <iterator>
+#include <list>
+#include <vector>
+#include <set>
+#include <unordered_set>
+#include <map>
+#include <unordered_map>
+#include <string>
+#include <deque>
+#include <forward_list>
+#include "../util/util.h"
+#include <utility>
+#include <queue>
+
+int main(void)
+{
+    /**
+    std::list<char> col1;
+    for(char c='a';c <= 'z'; ++c){
+        col1.push_back(c);
+    }
+
+    std::copy(col1.begin(), col1.end(), std::ostream_iterator<char>(std::cout, " "));
+     **/
+
+    /**
+    std::multiset<std::string>col1{
+            "BEIJING", "SHANGHAI", "HANGZHOU", "NANJING", "CHENGDU"
+    };
+
+    //排序
+    std::copy(col1.begin(), col1.end(), std::ostream_iterator<std::string>(std::cout, " "));
+
+    std::multiset<std::string>::iterator it = col1.begin();
+    std::cout << *it++ << std::endl;
+    std::cout << *it++ << std::endl;
+    std::cout << *it++ << std::endl;
+    std::cout << *it++ << std::endl;
+    std::cout << *it++ << std::endl;
+
+    std::copy(col1.begin(), col1.end(), std::ostream_iterator<std::string>(std::cout, " "));
+     **/
+
+    /**
+    std::multimap<std::string, int> col1;
+    col1.insert(std::make_pair<std::string,int>("maiev", 20));
+    col1.insert(std::make_pair<std::string,int>("FENG", 21));
+    col1.insert(std::make_pair<std::string,int>("ZENG", 22));
+
+    auto it = col1.begin();
+    std::cout << "name is : " <<(*it).first;
+    std::cout << " and age is : " <<(*it).second << std::endl;
+    it++;
+    std::cout << "name is : " <<(*it).first;
+    std::cout << " and age is : " <<(*it).second << std::endl;
+    it++;
+    std::cout << "name is : " <<(*it).first;
+    std::cout << " and age is : " <<(*it).second << std::endl;
+
+    for(auto pair : col1){
+        std::cout << "name is : " << pair.first;
+        std::cout << " and age is : " << pair.second << std::endl;
+    }
+
+    std::copy(col1.begin(), col1.end(), std::ostream_iterator<std::pair<std::string, int>(std::cout, " ")); error
+     **/
+
+    /**
+    std::cout << "------------------------------------" << std::endl;
+    std::cout << "set" << std::endl;
+    std::set<std::string> fruit;
+    fruit.emplace(std::string("APPLE"));
+    fruit.emplace(std::string("BANANA"));
+    fruit.emplace(std::string("ORANGE"));
+    fruit.emplace(std::string("JUSTIC"));
+    std::copy(fruit.begin(), fruit.end(), std::ostream_iterator<std::string>(std::cout, " "));
+    std::cout << std::endl;
+
+    std::cout << "------------------------------------" << std::endl;
+    std::cout << "unordered_set" << std::endl;
+    std::unordered_set<std::string>col1{
+            "BEIJING", "SHANGHAI", "HANGZHOU", "NANJING", "CHENGDU"
+    };
+
+    //排序
+    std::copy(col1.begin(), col1.end(), std::ostream_iterator<std::string>(std::cout, " "));
+
+    std::unordered_set<std::string>::iterator it = col1.begin();
+    std::cout << *it++ << std::endl;
+    std::cout << *it++ << std::endl;
+    std::cout << *it++ << std::endl;
+    std::cout << *it++ << std::endl;
+    std::cout << *it++ << std::endl;
+
+    std::cout << "------------------------------------" << std::endl;
+    std::cout << "unordered_map" << std::endl;
+
+    std::unordered_map<std::string, int> col2;
+    col2.insert(std::make_pair<std::string,int>("maiev", 20));
+    col2.insert(std::make_pair<std::string,int>("FENG", 21));
+    col2.insert(std::make_pair<std::string,int>("ZENG", 22));
+
+    for(auto pair : col2){
+        std::cout << "name is : " << pair.first;
+        std::cout << " and age is : " << pair.second << std::endl;
+    }
+
+    std::cout << std::endl;
+
+    std::cout << "------------------------------------" << std::endl;
+    std::cout << "unordered_multiset" << std::endl;
+    std::unordered_multiset<std::string>col3{
+            "BEIJING", "SHANGHAI", "HANGZHOU", "NANJING", "CHENGDU"
+    };
+
+    col3.insert(std::string("HANGZHOU"));
+    std::copy(col3.begin(), col3.end(), std::ostream_iterator<std::string>(std::cout, " "));
+    std::cout << std::endl;
+
+    std::cout << "------------------------------------" << std::endl;
+    std::cout << "unordered_multimap" << std::endl;
+    std::unordered_multimap<std::string, int> col4;
+    col4.insert(std::make_pair<std::string,int>("maiev", 20));
+    col4.insert(std::make_pair<std::string,int>("FENG", 21));
+    col4.insert(std::make_pair<std::string,int>("ZENG", 22));
+
+    for(auto pair : col4){
+        std::cout << "name is : " << pair.first;
+        std::cout << " and age is : " << pair.second << std::endl;
+    }
+
+    std::cout << std::endl;
+     **/
+
+    /**
+    std::cout << "------------------------------------" << std::endl;
+    std::cout << "priority queue" << std::endl;
+    std::priority_queue<int> pq;
+    pq.push(30);
+    pq.push(10);
+    pq.push(5);
+    pq.push(40);
+    pq.push(20);
+
+    while(!pq.empty()){
+        std::cout << pq.top() << std::endl;
+        pq.pop();
+    }
+
+    std::cout << "------------------------------------" << std::endl;
+    std::cout << "set" << std::endl;
+    typedef std::set<int> Intset;
+    Intset col1{1,23,2,3,3,4,54,5};
+    Intset col2;
+//    std::copy(col1.begin(), col1.end(), std::ostream_iterator<int> (std::cout, " "));
+//    std::copy(col1.begin(), col1.end(), back_inserter(col2));
+
+    PRINT_CONTAINER(col1, "can u fell");
+    **/
+
+    /*
+    std::vector<int> col3;
+    std::back_insert_iterator<std::vector<int>> it(col3);
+    *it++ = 3;
+    *it++ = 4;
+    *it++ = 5;
+    std::copy(col3.begin(), col3.end(), std::ostream_iterator<int> (std::cout, " "));
+     */
+
+    std::cout << TRUE_TYPE::VALUE << std::endl;
+
+    return 0;
+}

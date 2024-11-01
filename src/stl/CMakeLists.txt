@@ -10,6 +10,7 @@ message(STATUS "LIB:${LIB}")
 add_subdirectory(stack)
 add_subdirectory(iterator)
 add_subdirectory(function)
+add_subdirectory(container)
 
 include_directories(${LIB})
 
