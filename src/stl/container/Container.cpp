@@ -298,6 +298,85 @@ int main(void)
     **/
 
     /**
+     * <vector> random-access-iterator
+     * vector<elem> c;
+     * vector<elem> c(c2);
+     * vector<elem> c = c2;
+     * vector<elem> c(rc);
+     * vector<elem> c = rc;
+     * vector<elem> c(n);
+     * vector<elem> c(n, elem);
+     * vector<elem> c (c2.begin(), c2.end());
+     * vector<elem> c{initilist};
+     * vector<elem> c = {initlist;
+     *
+     * operations:
+     * c.empty()
+     * c.size()
+     * c.capacity()
+     * c.max_size()
+     * c.reverse(num); //enlarge capacity ,if not enough
+     * c.shrink_to_fit
+     * c1 < c2;
+     * c2 <= c2;
+     * c1 == c2;
+     * c1 > c2;
+     * c1 >= c2;
+     * c1 != c2;
+     *
+     * assign:
+     * c = initlist;
+     * c = c2;
+     * c = rv;
+     * c.assign(n, begin);
+     * c.assign(beg, end);
+     * c.assign(initlist)
+     * c1.swap(c2)
+     * swap(c1,c2)
+     *
+     * element access:
+     * c.at(idx);
+     * c[idx]
+     * c.front()
+     * c.back()
+     *
+     * Iterator functions:
+     * c.begin()
+     * c.end()
+     * c.rbegin()
+     * c.rend()
+     * c.cbegin()
+     * c.cend()
+     * c.crbegin()
+     * c.crend()
+     *
+     * operations;
+     * c.push_back()
+     * c.pop_back()
+     * c.insert(pos, elem)
+     * c.insert(pos, n, elem)
+     * c.insert(pos, begin, end)
+     * c.insert(pos, initlist)
+     * c.emplace(pos, args...)
+     * c.emplace_back(pos, args...)
+     * c.erase(pos)
+     * c.erase(begin,end)
+     * c.resize(num)
+     * c.resize(num, elem)
+     * c.clear()
+     *
+     *
+     * vector<bool>
+     * c.flip()
+     * c[idx].flip()
+     * c[idx] = val
+     * c[idx] = c[idx2]
+     *
+     */
+
+    /**
+     *
+     * vector-example
     std::vector<int> vc, vc2;
     std::copy(arr.begin(), arr.end(), back_inserter(vc));
     std::cout << vc.size() << std::endl;
@@ -305,6 +384,111 @@ int main(void)
     vc2 = std::move(vc);
     std::cout << vc.size() << std::endl;
     std::cout << vc2.size() << std::endl;
+        std::vector<bool> vc(5, true);
+
+    std::copy(vc.begin(), vc.end(), ostream_iterator<bool>(cout, " "));
+    std::cout<< std::endl;
+    vc[1].flip();
+    std::copy(vc.begin(), vc.end(), ostream_iterator<bool>(cout, " "));
+    std::cout<< std::endl;
+    vc[2].flip();
+    std::copy(vc.begin(), vc.end(), ostream_iterator<bool>(cout, " "));
+    std::cout<< std::endl;
+    vc.flip();
+    std::copy(vc.begin(), vc.end(), ostream_iterator<bool>(cout, " "));
+    std::cout<< std::endl;
+     **/
+
+    /**
+     * deque --double -end -queue [random-access-itertor]
+     * deque<Elem> c
+     * deque<Elem> c(c2)
+     * deque<Elem> c = c2
+     * deque<Elem> c = rc
+     * deque<Elem> c(rc)
+     * deque<Elem> c = initlist
+     * deque<Elem> c(initlist)
+     * deque<Elem> c(beg,end)
+     * deque<Elem> c(n)
+     * deque<Elem> c(n,elem>
+     * c.~deque()
+     *
+     * operation:
+     * c.empty()
+     * c.size()
+     * c.max_size()
+     * c.capacity()
+     * c.reverse(n)
+     * c.shrink_to_fit()
+     * c1 > c2
+     * c1 >= c2
+     * c1 < c2
+     * c1 <= c2
+     * c1 != c2
+     * c1 == c2
+     * c.front()
+     * c.back()
+     * c.at(idx)
+     * c[idx]
+     * c.begin()
+     * c.end()
+     * c.rbegin()
+     * c.rend()
+     * c.crbegin()
+     * c.crend()
+     *
+     * c = c2
+     * c = rv
+     * c = initlist
+     * c.assign(c2)
+     * c.assign(rv)
+     * c.assign(initlist)
+     * c.assign(beg,end)
+     * c1.swap(c2)
+     * swap(c1,c2)
+     * c.erase(beg,end)
+     * c.erase(pos)
+     * c.erase(pos, n)
+     * c.push_back(elem)
+     * c.pop_back()
+     * c.push_front(elem)
+     * c.pop_front()
+     * c.insert(pos, elem )
+     * c.insert(pos, n, elem)
+     * c.insert(pos, beg, end)
+     * c.insert(pos, initlist)
+     * c.emplace(pos, args...)
+     * c.emplace_back(args..)
+     * c.emplace_front(args...)
+     * c.erase(pos)
+     * c.erase(beg,end)
+     * c.resize(n)
+     * c.resize(n,elem)
+     * c.clear()
+     *
+     */
+
+    /**
+     * deque--example
+    std::deque<int> col1{1,2,3,4};
+    col1.insert(col1.begin(), {1,2,3});
+    PRINT_CONTAINER(col1, "col1:");
+    std::deque<int> col2 = std::move(col1);
+    PRINT_CONTAINER(col1, "col1 after move:");
+    PRINT_CONTAINER(col2, "col2:");
+    col2.clear();
+    PRINT_CONTAINER(col2, "col2 after clear:");
+    col2.push_front(1);
+    col2.push_front(2);
+    col2.push_front(3);
+    PRINT_CONTAINER(col2, "col2 push front :");
+    std::cout << col2.size() << std::endl;
+    col2.resize(5, 0);
+    PRINT_CONTAINER(col2, "col2 resize :");
+    col2.erase(next(col2.begin()), prev(col2.end()));
+    PRINT_CONTAINER(col2, "col2 erase [begin+1, end-1] :");
+    col1.swap(col2);
+    PRINT_CONTAINER(col2, "col1 swap col2 :");
      **/
 
     return 0;
