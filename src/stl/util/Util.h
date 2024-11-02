@@ -30,5 +30,9 @@ void PRINT_CONTAINER(Container container, const std::string outstr = ": ")
 //    std::cout << std::endl;
 }
 
+template <typename T>
+void PRINT(const std::string& msg){
+    std::cout << msg << std::endl;
+}
 
 #endif //UNTITLED_UTIL_H

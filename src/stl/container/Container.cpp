@@ -440,15 +440,12 @@ int main(void)
      * c = c2
      * c = rv
      * c = initlist
-     * c.assign(c2)
-     * c.assign(rv)
+     * c.assign(n,elem)
      * c.assign(initlist)
      * c.assign(beg,end)
      * c1.swap(c2)
      * swap(c1,c2)
      * c.erase(beg,end)
-     * c.erase(pos)
-     * c.erase(pos, n)
      * c.push_back(elem)
      * c.pop_back()
      * c.push_front(elem)
@@ -490,6 +487,78 @@ int main(void)
     col1.swap(col2);
     PRINT_CONTAINER(col2, "col1 swap col2 :");
      **/
+
+    /**
+     * list -bidirection-iterator
+     * list<Elem> c;
+     * list<Elem> c = c2;
+     * list<Elem> c(c2);
+     * list<Elem> c = rc;
+     * list<Elem> c(rc);
+     * list<Elem> c = initlist;
+     * list<Elem> c(initlist);
+     * list<Elem> c(begin, end)
+     *c.~list()
+     *
+     * nomodifying operations:
+     * c.empty()
+     * c.max_size()
+     * c.size()
+     * c1 > c2
+     * c1 >= c2
+     * c1 == c2;
+     * c1 != c2
+     * c1 < c2;
+     * c1 <= c2
+     *
+     * assgin operations:
+     * c1 = c2;
+     * c1 = rc;
+     * c1 = initlist
+     * c1.assign(beg, end)
+     * c1.assign(n, elem)
+     * c1.assign(initlist)
+     * c1.swap(c2)
+     * swap(c1,c2)
+     *
+     * modifying operations:
+     * c1.push_back(elem)
+     * c1.pop_back()
+     * c1.push_front(elem)
+     * c1.pop_front()
+     * c1.insert(pos, initlist)
+     * c1.insert(beg, end)
+     * c1.insert(pos, n, elem)
+     * c1.insert(pos, beg, end)
+     * c.erase(pos)
+     * c.erase(beg,end)
+     * c.emplace(pos, args...)
+     * c.emplace_back(args...)
+     * c.emplace_front(args...)
+     * c.resize(n)
+     * c.resize(n,elem)
+     * c.clear()
+     */
+
+    /** list -example
+    std::list<int> col1;
+    col1.assign({1,2,3,4,5});
+    PRINT_CONTAINER(col1, "col1:");
+    col1.erase(next(col1.begin()));
+    PRINT_CONTAINER(col1, "col1 erase:");
+    col1.insert(next(col1.begin()), {2,2});
+    col1.emplace(prev(col1.end()), 11);
+    col1.emplace(prev(col1.end()), 22);
+    PRINT_CONTAINER(col1, "col1 emplace:");
+
+    std::list<int>col2(col1);
+    PRINT_CONTAINER(col2, "col2 :");
+    col2.clear();
+    PRINT_CONTAINER(col2, "col2 clear:");
+    col2.push_front(1);
+    col2.insert(prev(col2.begin()), {1,2,3});
+    PRINT_CONTAINER(col2, "col2 push:");
+    **/
 
     return 0;
 }
