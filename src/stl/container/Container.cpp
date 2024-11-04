@@ -213,60 +213,18 @@ int main(void)
     std::copy(col1.begin(), col1.end(), std::ostream_iterator<int> (std::cout, " "));
      **/
 
-    /**
-     * std::array
-     * initialization std::array
-     * swap and move semantics
-     * array operations:
-     * array<int,N> c;
-     * array<int,N> c(c2);
-     * array<int,N> c= c2;
-     * array<int,N> c(rv);
-     * array<int,N> c = rv;
-     * array<int,N> c = initlist;
-     *
-     * c.empty()
-     * c.size()
-     * c.max_size()
-     * c1 == c2;
-     * c1 != c2;
-     * c1 >= c2;
-     * c1 <= c2;
-     * c1 > c2;
-     * c1 < c2;
-     *
-     * assign:
-     * c = c2;
-     * c.fill(n);
-     * c1.swap(c2);
-     * std::swap(c1, c2);
-     *
-     * access:
-     * c.front();
-     * c.back();
-     * c[idx];
-     * c.at(idx);
-     * c.data() first element pointer
-     *
-     * ierator:
-     * c.begin()
-     * c.end();
-     * c.cbegin();
-     * c.cend();
-     * c.rbegin();
-     * c.rend();
-     * c.crbegin();
-     * c.crend();
-     *
-     * tuple inferface
-     * tuple_size()
-     * tuple_element()
-     * get<>()
-     *
-     */
+//    test_array();
+//    test_vector();
+//    test_deque();
+//    test_list();
+//    test_forward_list();
+//    test_set();
+    test_map();
 
-    /**
-     * std::array --example
+    return 0;
+}
+
+void test_array(){
     std::cout << "--------------" << std::endl;
     std::array<int, 5> arr={1,2,3};
     std::array<int, 5> arr2(arr);
@@ -294,97 +252,17 @@ int main(void)
     std::cout << std::get<1>(a) << std::endl;
 
     std::cout << (negate<int>()(1)) << std::endl;
+}
 
-    **/
-
-    /**
-     * <vector> random-access-iterator
-     * vector<elem> c;
-     * vector<elem> c(c2);
-     * vector<elem> c = c2;
-     * vector<elem> c(rc);
-     * vector<elem> c = rc;
-     * vector<elem> c(n);
-     * vector<elem> c(n, elem);
-     * vector<elem> c (c2.begin(), c2.end());
-     * vector<elem> c{initilist};
-     * vector<elem> c = {initlist;
-     *
-     * operations:
-     * c.empty()
-     * c.size()
-     * c.capacity()
-     * c.max_size()
-     * c.reverse(num); //enlarge capacity ,if not enough
-     * c.shrink_to_fit
-     * c1 < c2;
-     * c2 <= c2;
-     * c1 == c2;
-     * c1 > c2;
-     * c1 >= c2;
-     * c1 != c2;
-     *
-     * assign:
-     * c = initlist;
-     * c = c2;
-     * c = rv;
-     * c.assign(n, begin);
-     * c.assign(beg, end);
-     * c.assign(initlist)
-     * c1.swap(c2)
-     * swap(c1,c2)
-     *
-     * element access:
-     * c.at(idx);
-     * c[idx]
-     * c.front()
-     * c.back()
-     *
-     * Iterator functions:
-     * c.begin()
-     * c.end()
-     * c.rbegin()
-     * c.rend()
-     * c.cbegin()
-     * c.cend()
-     * c.crbegin()
-     * c.crend()
-     *
-     * operations;
-     * c.push_back()
-     * c.pop_back()
-     * c.insert(pos, elem)
-     * c.insert(pos, n, elem)
-     * c.insert(pos, begin, end)
-     * c.insert(pos, initlist)
-     * c.emplace(pos, args...)
-     * c.emplace_back(pos, args...)
-     * c.erase(pos)
-     * c.erase(begin,end)
-     * c.resize(num)
-     * c.resize(num, elem)
-     * c.clear()
-     *
-     *
-     * vector<bool>
-     * c.flip()
-     * c[idx].flip()
-     * c[idx] = val
-     * c[idx] = c[idx2]
-     *
-     */
-
-    /**
-     *
-     * vector-example
-    std::vector<int> vc, vc2;
-    std::copy(arr.begin(), arr.end(), back_inserter(vc));
-    std::cout << vc.size() << std::endl;
-
-    vc2 = std::move(vc);
-    std::cout << vc.size() << std::endl;
-    std::cout << vc2.size() << std::endl;
-        std::vector<bool> vc(5, true);
+void test_vector(){
+//    std::vector<int> vc, vc2;
+//    std::copy(arr.begin(), arr.end(), back_inserter(vc));
+//    std::cout << vc.size() << std::endl;
+//
+//    vc2 = std::move(vc);
+//    std::cout << vc.size() << std::endl;
+//    std::cout << vc2.size() << std::endl;
+    std::vector<bool> vc(5, true);
 
     std::copy(vc.begin(), vc.end(), ostream_iterator<bool>(cout, " "));
     std::cout<< std::endl;
@@ -397,76 +275,9 @@ int main(void)
     vc.flip();
     std::copy(vc.begin(), vc.end(), ostream_iterator<bool>(cout, " "));
     std::cout<< std::endl;
-     **/
+}
 
-    /**
-     * deque --double -end -queue [random-access-itertor]
-     * deque<Elem> c
-     * deque<Elem> c(c2)
-     * deque<Elem> c = c2
-     * deque<Elem> c = rc
-     * deque<Elem> c(rc)
-     * deque<Elem> c = initlist
-     * deque<Elem> c(initlist)
-     * deque<Elem> c(beg,end)
-     * deque<Elem> c(n)
-     * deque<Elem> c(n,elem>
-     * c.~deque()
-     *
-     * operation:
-     * c.empty()
-     * c.size()
-     * c.max_size()
-     * c.capacity()
-     * c.reverse(n)
-     * c.shrink_to_fit()
-     * c1 > c2
-     * c1 >= c2
-     * c1 < c2
-     * c1 <= c2
-     * c1 != c2
-     * c1 == c2
-     * c.front()
-     * c.back()
-     * c.at(idx)
-     * c[idx]
-     * c.begin()
-     * c.end()
-     * c.rbegin()
-     * c.rend()
-     * c.crbegin()
-     * c.crend()
-     *
-     * c = c2
-     * c = rv
-     * c = initlist
-     * c.assign(n,elem)
-     * c.assign(initlist)
-     * c.assign(beg,end)
-     * c1.swap(c2)
-     * swap(c1,c2)
-     * c.erase(beg,end)
-     * c.push_back(elem)
-     * c.pop_back()
-     * c.push_front(elem)
-     * c.pop_front()
-     * c.insert(pos, elem )
-     * c.insert(pos, n, elem)
-     * c.insert(pos, beg, end)
-     * c.insert(pos, initlist)
-     * c.emplace(pos, args...)
-     * c.emplace_back(args..)
-     * c.emplace_front(args...)
-     * c.erase(pos)
-     * c.erase(beg,end)
-     * c.resize(n)
-     * c.resize(n,elem)
-     * c.clear()
-     *
-     */
-
-    /**
-     * deque--example
+void test_deque(){
     std::deque<int> col1{1,2,3,4};
     col1.insert(col1.begin(), {1,2,3});
     PRINT_CONTAINER(col1, "col1:");
@@ -486,61 +297,9 @@ int main(void)
     PRINT_CONTAINER(col2, "col2 erase [begin+1, end-1] :");
     col1.swap(col2);
     PRINT_CONTAINER(col2, "col1 swap col2 :");
-     **/
+}
 
-    /**
-     * list -bidirection-iterator
-     * list<Elem> c;
-     * list<Elem> c = c2;
-     * list<Elem> c(c2);
-     * list<Elem> c = rc;
-     * list<Elem> c(rc);
-     * list<Elem> c = initlist;
-     * list<Elem> c(initlist);
-     * list<Elem> c(begin, end)
-     *c.~list()
-     *
-     * nomodifying operations:
-     * c.empty()
-     * c.max_size()
-     * c.size()
-     * c1 > c2
-     * c1 >= c2
-     * c1 == c2;
-     * c1 != c2
-     * c1 < c2;
-     * c1 <= c2
-     *
-     * assgin operations:
-     * c1 = c2;
-     * c1 = rc;
-     * c1 = initlist
-     * c1.assign(beg, end)
-     * c1.assign(n, elem)
-     * c1.assign(initlist)
-     * c1.swap(c2)
-     * swap(c1,c2)
-     *
-     * modifying operations:
-     * c1.push_back(elem)
-     * c1.pop_back()
-     * c1.push_front(elem)
-     * c1.pop_front()
-     * c1.insert(pos, initlist)
-     * c1.insert(beg, end)
-     * c1.insert(pos, n, elem)
-     * c1.insert(pos, beg, end)
-     * c.erase(pos)
-     * c.erase(beg,end)
-     * c.emplace(pos, args...)
-     * c.emplace_back(args...)
-     * c.emplace_front(args...)
-     * c.resize(n)
-     * c.resize(n,elem)
-     * c.clear()
-     */
-
-    /** list -example
+void test_list(){
     std::list<int> col1;
     col1.assign({1,2,3,4,5});
     PRINT_CONTAINER(col1, "col1:");
@@ -558,7 +317,131 @@ int main(void)
     col2.push_front(1);
     col2.insert(prev(col2.begin()), {1,2,3});
     PRINT_CONTAINER(col2, "col2 push:");
-    **/
+}
 
-    return 0;
+void test_forward_list(){
+    std::forward_list<int> list1 = {1,2,3,4};
+    std::forward_list<int> list2 = {4,4,77,88,99};
+    PRINT_CONTAINER(list1, "list:");
+
+    list1.insert_after(list1.begin(), list2.begin(), list2.end());
+    PRINT_CONTAINER(list1, "list-insert:");
+
+    std::forward_list<int>::iterator it = list1.begin();
+
+    list1.splice_after(it, list2);
+    PRINT_CONTAINER(list1, "list-splice:");
+
+    list1.remove(3);
+    PRINT_CONTAINER(list1, "list-remove:");
+
+    list1.unique();
+    PRINT_CONTAINER(list1, "list-unique:");
+
+    list1.reverse();
+    PRINT_CONTAINER(list1, "list-reverse:");
+
+    list1.erase_after(list1.begin(), list1.end());
+    PRINT_CONTAINER(list1, "list-erase:");
+
+    list1.insert_after(list1.begin(), list2.begin(), list2.end());
+    PRINT_CONTAINER(list1, "list-insert:");
+};
+
+void test_set(){
+    std::set<int, greater<int>>col1;
+
+    col1.insert({1,2,34,5,6});
+    col1.insert(6);
+    PRINT_CONTAINER(col1, "set insert:");
+
+    auto status = col1.insert(1);
+    if (status.second){
+        std::cout << "success" << std::endl;
+    }else{
+        std::cout << "fail!!!" << std::endl;
+    }
+
+//    typedef std::set<int, RuntimeCmp> Intset;
+//    RuntimeCmp ro(RuntimeCmp::REVERSE);
+//    Intset col2(ro);
+    std::set<int, classcomp> col2;
+    std::set<int, classcomp> col3;
+    bool (*fncomp_str)(int, int) = fncomp;
+//    std::set<int, decltype(fncomp_str)> col2(fncomp_str);
+//    std::set<int, bool(*)(int, int)> col2(fncomp_str);
+//    std::set<int, RuntimeCmp> col2(RuntimeCmp::REVERSE);
+
+    col2.insert(1);
+    col2.insert(5);
+    col2.insert(3);
+
+//    set<int> col2(col1.cbegin(), col1.cend());
+//    std::copy(col2.begin(), col2.end(), std::ostream_iterator<int>(cout, " "));
+//    std::cout << std::endl;
+    PRINT_CONTAINER(col2, "col2:");
+
+    col2.erase(1);
+    col2.erase(col2.begin(), col2.find(3));
+    PRINT_CONTAINER(col2, "col2 erase:");
+
+    col3 = col2;
+
+    if (col3.key_comp() == col2.key_comp()){
+        std::cout << "value-comp====" << std::endl;
+    }else{
+        std::cout << "value-comp" << std::endl;
+    }
+}
+
+bool find_value(const std::pair<std::string, double>& elem, std::string name){
+    return elem.first == name;
+}
+
+template<typename T, typename U>
+void fq(const typename std::map<T, U>::value_type & elem){
+    std::cout << "map : (" << elem.first <<" " <<  elem.second << ")"<< std::endl;
+};
+
+void test_map(){
+   map<std::string, double> col1{
+           {"tim", 9.9},
+           {"struppi", 11.77},
+   };
+
+   col1["maiev"] = 22.0;
+    col1["tim"] = 0.11;
+
+    std::for_each(col1.begin(), col1.end(), [](std::map<const std::string, double>::value_type & elem){
+        elem.second *= 2;
+    });
+
+    std::for_each(col1.begin(), col1.end(), [](const std::map<std::string, double>::value_type &elem){
+        std::cout << elem.first << ": " << elem.second << std::endl;
+    });
+
+    auto pos = col1.find("tim");
+    if (pos != col1.end()){
+        std::cout << "found : (" << pos->first <<" " <<  pos->second << ")"<< std::endl;
+    }
+
+    auto bb = std::bind(fq<std::string, double>, std::placeholders::_1);
+    for_each(col1.begin(), col1.end(), bb);
+
+    auto posVal = std::find_if(col1.begin(), col1.end(), std::bind(find_value, std::placeholders::_1, "tim"));
+    if (posVal != col1.end()){
+        std::cout << "found : (" << posVal->first <<" " <<  posVal->second << ")"<< std::endl;
+    }else{
+        std::cout << "not found " << std::endl;
+    }
+
+    typedef std::map<std::string, std::string, RuntimeStringCmp> stringstringMap;
+    RuntimeStringCmp cmp(RuntimeStringCmp::NOCASE);
+    stringstringMap col2(cmp);
+    col2.insert(make_pair<std::string, std::string>("Deutschland", "beijing"));
+    col2.insert(make_pair<std::string, std::string>("deutsch", "nanchan"));
+    col2.insert(make_pair<std::string, std::string>("Haken", "shanghai"));
+    col2.insert(make_pair<std::string, std::string>("gehen", "go"));
+    col2.insert(make_pair<std::string, std::string>("Gehen", "go-11"));
+    for_each(col2.begin(), col2.end(), std::bind(fq<std::string, std::string>, std::placeholders::_1));
 }
