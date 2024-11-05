@@ -17,6 +17,7 @@
 #include <unordered_set>
 #include <utility>
 #include "../util/Util.h"
+#include <functional>
 
 using namespace std;
 
@@ -507,7 +508,9 @@ struct classcomp{
  * map c = initlist
  * c.~map()
  *
- * map types: map<Key, Val> map<Key,Val, Op>, multimap<Key, Val>, multimap<Key, Val, Op>
+ * map types:
+ * map<Key, Val> map<Key,Val, Op>,
+ * multimap<Key, Val>, multimap<Key, Val, Op>
  *
  * c.key_comp()
  * c.value_comp()
@@ -584,5 +587,191 @@ public:
 };
 
 void test_map();
+
+/**
+ * unordered containers
+ * #include <unordered_set> unordered_set,unordered_multiset
+ * #include <unordered_map> unordered_map,unordered_multimap
+ *
+ * Unord c
+ * Unord c(bnum)
+ * Unord c(bnum, hf)
+ * Unord c(bnum, hf, cmp)
+ *
+ * Unord c(c2)
+ * Unord c = c2
+ * Unord c(rv)
+ * Unord c = rv
+ * Unord c{inlist}
+ * Unord c = {initlist}
+ * Unord c (beg, end)
+ * Unord c (beg, end ,bnum)
+ * Unord c(beg, end, bnum, hf)
+ * c.~Unord
+ *
+ * Unord includes:
+ * unordered_set<Elem>
+ * unordered_set<ELem,Hash>
+ * unordered_set<ELem,Hash,Cmp>
+ *
+ * unordered_multiset<Elem>
+ * unordered_multiset<ELem,Hash>
+ * unordered_multiset<ELem,Hash,Cmp>
+ *
+ * unordered_map<Key, T>
+ * unordered_map<Key,T, Hash>
+ * unordered_map<Key, T, Hash,Cmp>
+ *
+ * unordered_multimap<Key, T>
+ * unordered_multimap<Key, T,Hash>
+ * unordered_multimap<Key,T ,Hash, Cmp>
+ *
+ * layout operations:
+ * c.hash_functions()
+ * c.key_eq()
+ * c.bucket_count()
+ * c.max_bucker_count()
+ * c.load_factor()
+ * c.max_load_factor()
+ * c.max_load_factor(val)
+ * c.rehash(bnum)
+ * c.reverse(num)
+ *
+ * nomodifying operations:
+ * c.empty()
+ * c.size()
+ * c.max_size()
+ * c1 == c2
+ * c1 != c2
+ *
+ * special search operations:
+ * c.count(val)
+ * c.find(val)
+ * c.equal_range(val)
+ *
+ * assign:
+ * c = c2;
+ * c = rv
+ * c = initlist
+ * c1.swap(c2)
+ * swap(c1, c2)
+ *
+ * ierator functions:
+ * c.begin()
+ * c.end()
+ * c.cbegin()
+ * c.cend();
+ *
+ * c.rbegin()
+ * c.rend()
+ * c.crbegin()
+ * c.crend()
+ *
+ * inserting and removing
+ * c.insert(val)
+ * c.insert(pos, val)
+ * c.insert(beg, end)
+ * c.insert(initlist)
+ * c.emplace(args...)
+ * c.emplace_hint(pos, args...)
+ * c.erase(val)
+ * c.erase(pos)
+ * c.erase(begin, end)
+ * c.clear()
+ *
+ * bucket interface
+ * c.bucket_count()
+ * c.bucket(val)
+ * c.bucket_size(buckidx)
+ * c.begin(buckidx)
+ * c.end(buckidx)
+ * c.cbegin(buckidx)
+ * c.cend(buckidx)
+ *
+ * c[key]
+ * c.at(key)
+ */
+
+template <typename T>
+inline void hash_combine(std::size_t& seed, const T& val)
+{
+    seed ^= std::hash<T>()(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
+
+template <typename T>
+inline void hash_val(std::size_t& seed, const T& val)
+{
+    hash_combine(seed,val);
+}
+
+template<typename T, typename ...Types>
+inline void hash_val(std::size_t& seed, const T&val, const Types& ...args)
+{
+    hash_combine(seed, val);
+    hash_val(seed, args...);
+}
+
+template<typename ...Types>
+inline std::size_t hash_val(const Types& ...args)
+{
+    std::size_t seed = 0;
+    hash_val(seed, args...);
+
+    return seed;
+}
+
+class Customer
+{
+private :
+    std::string fname;
+    std::string lname;
+    long no;
+public:
+    Customer(const std::string& fn, const std::string& ln, long n) :fname(fn),lname(ln),no(n){}
+    friend ostream& operator<<(ostream& os, const Customer& c){
+        os << "[" << c.fname << ","
+        << c.lname << "," << c.no << "]"
+        << std::endl;
+
+        return os;
+    }
+
+    std::string firstname() const
+    {
+        return fname;
+    }
+
+    std::string lastname() const
+    {
+        return lname;
+    }
+    long number() const
+    {
+        return no;
+    }
+
+    friend class CustomerHash;
+    friend class CustomerEqual;
+};
+
+class CustomerHash
+{
+public:
+    std::size_t operator()(const Customer& c) const{
+        return hash_val(c.fname, c.lname, c.no);
+    }
+};
+
+class CustomerEqual
+{
+public:
+    bool operator()(const Customer& c1, const Customer& c2) const{
+        return c1.no == c2.no;
+    }
+};
+
+void test_unordered_containers();
+
+void test_other_containers();
 
 #endif //UNTITLED_CONTAINER_H

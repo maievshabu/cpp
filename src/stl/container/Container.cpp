@@ -22,6 +22,7 @@
 #include <chrono>
 #include <array>
 #include <functional>
+#include <numeric>
 
 int main(void)
 {
@@ -219,9 +220,32 @@ int main(void)
 //    test_list();
 //    test_forward_list();
 //    test_set();
-    test_map();
+//    test_map();
+//    test_unordered_containers();
 
+    test_other_containers();
     return 0;
+}
+
+void test_other_containers()
+{
+    int vals[] = {1 ,2, 3,4,5};
+    std::vector<int> v(std::begin(vals), std::end(vals));
+    std::copy(std::begin(v), std::end(v), std::ostream_iterator<int>(cout, " "));
+    std::cout << std::endl;
+
+    typedef std::map<std::string, float> bookItem;
+
+    std::vector<bookItem> books;
+    bookItem b1{{"aa", 1.1}};
+    std::map<std::string, float> f1{{"11", 1.1}, {"aa", 1.2}};
+
+    books.push_back(b1);
+    books.push_back(f1);
+    for(const bookItem & book : books ){
+        std::cout << ":" << std::endl;
+    }
+
 }
 
 void test_array(){
@@ -372,14 +396,26 @@ void test_set(){
 //    std::set<int, bool(*)(int, int)> col2(fncomp_str);
 //    std::set<int, RuntimeCmp> col2(RuntimeCmp::REVERSE);
 
+    col2.insert(2);
     col2.insert(1);
-    col2.insert(5);
     col2.insert(3);
+    col2.insert(5);
+    col2.insert(4);
+    PRINT_CONTAINER(col2, "col2: ");
+
+    auto c1 = col2.lower_bound(1);
+    std::cout << "low_bound :  " << std::distance(col2.begin(), c1) << std::endl;
+
+    auto c2 = col2.upper_bound(5);
+    std::cout << "upper_bound : " << std::distance(col2.begin(), c2) << std::endl;
+
+    std::cout << *c2++ << std::endl; // 4
+    std::cout << *c2++ << std::endl; // 3
+    std::cout << *c2++ << std::endl; // 2
 
 //    set<int> col2(col1.cbegin(), col1.cend());
 //    std::copy(col2.begin(), col2.end(), std::ostream_iterator<int>(cout, " "));
 //    std::cout << std::endl;
-    PRINT_CONTAINER(col2, "col2:");
 
     col2.erase(1);
     col2.erase(col2.begin(), col2.find(3));
@@ -444,4 +480,102 @@ void test_map(){
     col2.insert(make_pair<std::string, std::string>("gehen", "go"));
     col2.insert(make_pair<std::string, std::string>("Gehen", "go-11"));
     for_each(col2.begin(), col2.end(), std::bind(fq<std::string, std::string>, std::placeholders::_1));
+}
+
+void test_unordered_containers()
+{
+    unordered_set<int> col1 = {1,2,3,5,7,11, 13,17,19, 77};
+    PRINT_CONTAINER(col1, "col1:");
+    col1.insert({-7,17,33,-11, 17,19,1, 13});
+    PRINT_CONTAINER(col1, "col1 insert:");
+    col1.erase(33);
+    col1.insert(accumulate(col1.begin(), col1.end(), 0));
+    PRINT_CONTAINER(col1, "col1 erase and accmulate insert :");
+
+    if (col1.find(19) != col1.end()){
+        std::cout << "Found : 19" << std::endl;
+    }
+
+    unordered_set<int>::iterator pos;
+    for(pos=col1.begin(); pos!=col1.end();){
+        if (*pos < 0){
+            pos = col1.erase(pos);
+        }else{
+            ++pos;
+        }
+    }
+
+    PRINT_CONTAINER(col1, "remove negate:");
+
+    unordered_set<Customer, CustomerHash, CustomerEqual> custset;
+    custset.insert(Customer("nico", "Josuttis", 42));
+    PRINT_CONTAINER(custset, "set: ");
+
+    auto hash = [](const Customer&c){
+        return hash_val(c.firstname(), c.lastname(), c.number());
+    };
+
+    auto eq = [](const Customer &c1, const Customer &c2){
+        return c1.number() == c2.number();
+    };
+
+    unordered_set<Customer,decltype(hash), decltype(eq)> custset1(10, hash ,eq);
+    custset1.insert(Customer("nico", "Josuttis", 40));
+    custset1.insert(Customer("mn", "Josuttis", 41));
+    custset1.insert(Customer("uq", "Josuttis", 42));
+    custset1.insert(Customer("aa", "Josuttis", 43));
+    PRINT_CONTAINER(custset1, "set: ");
+
+    unsigned n = custset1.bucket_count();
+    std::cout << "bucket count :" << n << std::endl;
+
+    for(unsigned i = 0; i < custset1.bucket_count(); i++){
+        std::cout << "bucket #" << i << "contains: ";
+        std::cout << " and has " << custset1.bucket_size(i) << " elements" << std::endl;
+        for(auto it = custset1.begin(i); it != custset1.end(i); ++it){
+            std::cout << " " << *it;
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << "-------------" << std::endl;
+
+    std::for_each(custset1.begin(), custset1.end(), [custset1](const Customer& c1){
+        std::cout << "[" << c1.firstname()<< ","
+                  << c1.lastname()<< "," << c1.number() << "]"
+                  << std::endl;
+        std::cout << c1.number() << " is in bucker # " << custset1.bucket(c1)
+        << std::endl;
+    });
+
+    std::unordered_map<std::string, float> col2;
+    col2.insert(std::make_pair("Mike", 1.1));
+    col2.insert(std::make_pair("Maiev", 1.1));
+    col2.insert(std::make_pair("Shabu", 1.1));
+    col2.insert(std::make_pair("Nico", 1.1));
+    col2.insert(std::pair<std::string, float>("Nico", 1.1));
+
+    col2["qq"] = 2.2;
+
+    std::cout << col2.at("qq") << std::endl;
+
+    col2.emplace(std::piecewise_construct, std::make_tuple("hello"), std::make_tuple(1.11));
+
+//    for(auto pos = col2.begin(); pos != col2.end(); ++pos){
+//        pos->first = "111"; //error?
+//        pos->second = 1.2; //ok
+//        std::cout << pos->first << " : " <<  pos->second << std::endl;
+//    }
+
+//    std::for_each(col2.begin(), col2.end(),[](const std::pair<std::string, float>& elem){
+//        std::cout << elem.first << " : " <<  elem.second << std::endl;
+//    });
+
+    std::for_each(col2.begin(), col2.end(),[](const decltype(col2)::value_type & elem){
+        std::cout << elem.first << " : " <<  elem.second << std::endl;
+    });
+//
+//    std::for_each(col2.begin(), col2.end(),[](const typename std::unordered_map<std::string, float>::value_type & elem){
+//        std::cout << elem.first << " : " <<  elem.second << std::endl;
+//    });
 }
