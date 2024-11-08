@@ -23,6 +23,7 @@
 #include <array>
 #include <functional>
 #include <numeric>
+#include <memory>
 
 int main(void)
 {
@@ -234,18 +235,53 @@ void test_other_containers()
     std::copy(std::begin(v), std::end(v), std::ostream_iterator<int>(cout, " "));
     std::cout << std::endl;
 
-    typedef std::map<std::string, float> bookItem;
+    typedef shared_ptr<Item> ItemPtr;
+    set<ItemPtr> allItems;
+    deque<ItemPtr> bestsellers;
 
-    std::vector<bookItem> books;
-    bookItem b1{{"aa", 1.1}};
-    std::map<std::string, float> f1{{"11", 1.1}, {"aa", 1.2}};
+//    bestsellers = {
+//            ItemPtr(new Item("Kong Yizi", 20.10)),
+//            ItemPtr(new Item("A midsummer Night's Dream", 14.98)),
+//            ItemPtr(new Item("The Maltese Falcon", 9.88))
+//    };
+//    allItems = {
+//            ItemPtr(new Item("Watter", 0.44)),
+//            ItemPtr(new Item("Pizza", 2.44)),
+//    };
+//
+//    allItems.insert(bestsellers.begin(), bestsellers.end());
+//
+//    printItems("bestsellers: ", bestsellers);
+//    printItems("all: ", allItems);
+//    std::cout << std::endl;
+//
+//    std::for_each(bestsellers.begin(), bestsellers.end(), [](shared_ptr<Item>& elem){
+//        elem->setPrice(elem->getPrice() * 2);
+//    });
+//
+//    bestsellers[1] = * (find_if(allItems.begin(), allItems.end(), [](shared_ptr<Item> elem){
+//        return elem->getName() == "Pizza";
+//    }));
+//
+//    bestsellers[0]->setPrice(44.77);
+//    printItems("bestsellers: ", bestsellers);
+//    printItems("all: ", allItems);
 
-    books.push_back(b1);
-    books.push_back(f1);
-    for(const bookItem & book : books ){
-        std::cout << ":" << std::endl;
+    std::vector<std::reference_wrapper<Item>> books;
+    Item f("Faust", 12.99);
+    books.push_back(f);
+
+    for(const auto& book: books){
+        std::cout << book.get().getName() <<":"
+        << book.get().getPrice() << std::endl;
     }
 
+    f.setPrice(9.99);
+    std::cout << books[0].get().getPrice() <<std::endl;
+
+    for(const Item& book : books){
+        std::cout << book.getName() << ":" << book.getPrice()<< std::endl;
+    }
 }
 
 void test_array(){

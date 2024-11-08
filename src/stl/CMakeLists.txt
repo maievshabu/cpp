@@ -11,6 +11,7 @@ add_subdirectory(stack)
 add_subdirectory(iterator)
 add_subdirectory(function)
 add_subdirectory(container)
+add_subdirectory(algorithms)
 
 include_directories(${LIB})
 

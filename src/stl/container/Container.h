@@ -772,6 +772,38 @@ public:
 
 void test_unordered_containers();
 
+class Item{
+private:
+    std::string name;
+    float price;
+public:
+    Item(const std::string& n, float p = 0): name(n), price(p){}
+    std::string getName() const{
+        return name;
+    }
+
+    void setName(const std::string& n){
+        name = n;
+    }
+
+    float getPrice() const{
+        return price;
+    }
+
+    void setPrice(float p){
+        price = p;
+    }
+};
+
+template<typename Col1>
+void printItems(const std::string& msg, const Col1& col1){
+    std::cout << msg << std::endl;
+    for(const auto& elem : col1){
+        std::cout << " " << elem->getName() << ":"
+        << elem->getPrice() << std::endl;
+    }
+}
+
 void test_other_containers();
 
 #endif //UNTITLED_CONTAINER_H
