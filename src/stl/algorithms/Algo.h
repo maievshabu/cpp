@@ -223,9 +223,20 @@ bool isOdd(int elem)
     return elem % 2 == 1;
 }
 
+template <typename T>
+T xx(T x, T y)
+{
+    return x - y ;
+}
+
 bool myfunction(int i, int j )
 {
     return i > j;
+}
+
+bool mycomp(char c1, char c2)
+{
+    return std::tolower(c1) < std::tolower(c2);
 }
 
 

@@ -19,6 +19,8 @@
 #include <algorithm>
 #include <iterator>
 #include "../util/Util.h"
+#include <random>
+#include <chrono>
 
 using namespace std;
 
@@ -235,7 +237,7 @@ void test_search()
 //        return elem % 2 == 1;
 //    });
 
-//    pos = earch_n_if(col1.begin(), col1.end(),4, [](int elem) {
+//    pos = search_n_if(col1.begin(), col1.end(),4, [](int elem) {
 //        return elem % 2 == 1;
 //    });
 //
@@ -296,6 +298,20 @@ void test_equal()
     }else{
         std::cout <<  "5 not Found"<< std::endl ;
     }
+
+    vc={1,2,3,4,5,6,7,8,9};
+    if (!std::none_of(vc.begin(), vc.end(), isOdd)){
+        std::cout << "none of elem is odd!" << std::endl;
+    };
+
+    std::random_shuffle(vc.begin(), vc.end());
+    PRINT_ELEMENTS(vc, "vc random shuffle: ");
+
+    //第三小的元素
+//    std::nth_element(vc.begin(), vc.begin() +5, vc.end());
+    std::nth_element(vc.begin(), vc.begin() +5, vc.end(), myfunction);
+    std::cout << vc.at(5) << std::endl;
+    PRINT_ELEMENTS(vc, "vc: ");
 }
 
 void test_fill()
@@ -417,16 +433,200 @@ void test_part()
     PRINT_ELEMENTS(foo.begin(), foo.end(),"foo partial_sort: ");
     std::partial_sort_copy(foo.begin(), foo.begin() + 3, bar.begin(), bar.end(), myfunction);
     PRINT_ELEMENTS(bar.begin(), bar.end(),"foo partial_sort_copy: ");
+
+    pos = std::stable_partition(foo.begin(), foo.end(), isOdd);
+    PRINT_ELEMENTS(foo.begin(), pos, "foo [stale-partition]: ");
+    PRINT_ELEMENTS(pos, foo.end(), "foo [stale-partition]: ");
+
+    std::stable_sort(foo.begin(), foo.end());
+    PRINT_ELEMENTS(foo, "FOO[stable-sort]:");
+
+    int x = 10, y = 20;
+    std::cout << "x= " << x << " y= " << y << std::endl;
+    std::swap(x, y);
+    std::cout << "x= " << x << " y= " << y << std::endl;
+    std::vector<int> foo1(4,x), bar1(4,y), zoo(4);
+    std::swap(foo1, bar1);
+
+    PRINT_ELEMENTS(foo1, "foo1: ");
+    PRINT_ELEMENTS(bar1, "bar1: ");
+    std::swap_ranges(foo1.begin(), foo1.end(), bar1.begin());
+    PRINT_ELEMENTS(foo1, "foo1[swap-ranges]: ");
+    PRINT_ELEMENTS(bar1, "bar1[swap-ranges]: ");
+
+//    std::transform(foo1.begin(), foo1.end(), ostream_iterator<int>(cout," "), isOdd);
+
+    std::transform(foo1.begin(), foo1.end(), bar1.begin(), zoo.begin(), xx<int>);
+    PRINT_ELEMENTS(zoo, "zoo [plus]: ");
+
+    int myints[] = {10, 20, 20,20, 30, 30, 20, 20, 10};
+    std::vector<int>vc(myints,myints+9);
+    std::vector<int>v2(9);
+    std::vector<int>::iterator it;
+    PRINT_ELEMENTS(vc, "vc: ");
+    it = std::unique(vc.begin(), vc.end());
+    PRINT_ELEMENTS(vc, "vc[unique]: ");
+
+    std::unique_copy(vc.begin(), vc.end(), v2.begin());
+    PRINT_ELEMENTS(v2, "v2[unique-copy]: ");
+
+//    vc.resize(std::distance(vc.begin(), it));
+//    std::unique(vc.begin(), vc.end(), myfunction);
+//    PRINT_ELEMENTS(vc, "vc[unique]: ");
+
+//    std::stable_sort(foo.begin(), foo.end(), isOdd);
+//    PRINT_ELEMENTS(foo, "FOO[stable-sort-2]:");
 }
 
 void test_permutation()
 {
-    std::array<int, 4> foo{1,2,3,4};
-    std::array<int, 4> bar{1,3,2,4};
+    std::array<int, 3> foo{1,2,3};
+    std::array<int, 3> bar{1,4, 10};
 
     if (std::is_permutation(foo.begin(), foo.end(), bar.begin())){
         std::cout << "bar is a permutaion of foo" << std::endl;
     }
+
+    auto match = std::mismatch(foo.begin(), foo.end(), bar.begin());
+    std::cout << *(match.first) << *(match.second) << std::endl;
+    std::cout << distance(foo.begin(), match.first) << distance(bar.begin(), match.second) << std::endl;
+
+    std::sort(foo.begin(), foo.end());
+//    std::reverse(foo.begin(), foo.end());
+    do{
+//        std::next_permutation(foo.begin(), foo.end());
+        PRINT_ELEMENTS(foo, "foo: ");
+//    }while(std::prev_permutation(foo.begin(), foo.end()));
+    }while(std::next_permutation(foo.begin(), foo.end()));
+
+    std::iter_swap(foo.begin(), bar.begin()+1);
+    PRINT_ELEMENTS(foo, "foo: ");
+    PRINT_ELEMENTS(bar, "bar: ");
+
+    char foo1[]="Apple";
+    char bar1[]="apartment";
+    std::cout << std::boolalpha;
+    std::cout << "compareing foo and bar lexicographically(foo<bar): " << std::endl;
+    std::cout << "using default comparision:(operator<) " << std::endl;
+    std::cout << std::lexicographical_compare(foo1, foo1+5, bar1, bar1+9) << std::endl;
+    std::cout << "using mycomp as comparision object: " << std::endl;
+    std::cout << std::lexicographical_compare(foo1, foo1+5, bar1, bar1+9,mycomp) << std::endl;
+}
+
+void test_bound()
+{
+    int myints[] ={10,20,30,30,20,10,10,20};
+    std::vector<int>v{myints,myints+8};
+    std::sort(v.begin(), v.end());
+
+    std::vector<int>::iterator low, up;
+    low = std::lower_bound(v.begin(), v.end(), 20);
+    up = std::upper_bound(v.begin(), v.end(), 20);
+
+    PRINT_ELEMENTS(v, "vector: ");
+
+    std::cout << "lower-bound at pos: " << distance(v.begin(),low) <<std::endl;
+    std::cout << "upper-bound at pos: " << distance(v.begin(),up) <<std::endl;
+
+    std::vector<int> v1(v.size()*2);
+    std::merge(myints, myints+8, v.begin(),v.end(), v1.begin());
+
+    PRINT_ELEMENTS(v1, "v1: ");
+
+    std::cout << "move ranges : " << std::endl;
+    v1.resize(v.size()*3);
+    std::move_backward(v.begin(), v.end(), v1.end());
+//    std::move(v.begin(), v.end(), v1.begin());
+//    PRINT_ELEMENTS(v, "v: ");
+    PRINT_ELEMENTS(v1, "v1: ");
+
+//    std::cout << "move container: " << std::endl;
+//    v = std::move(v1);
+//    PRINT_ELEMENTS(v, "v: ");
+//    PRINT_ELEMENTS(v1, "v1: ");
+
+}
+
+void test_remove()
+{
+    int myints[] = {10,20,3,30,20,10,10,20, 11};
+    int *pbegin = myints;
+    int *pend = myints + sizeof(myints)/ sizeof(int);
+    PRINT_ELEMENTS(myints, "myints:");
+
+    std::vector<int> vc(9);
+
+//    pend = std::remove(pbegin, pend, 20);
+//    auto pos = std::remove_copy(pbegin, pend, vc.begin(), 20);
+//    auto pos = std::remove_copy_if(pbegin, pend, vc.begin(), isOdd);
+//    PRINT_ELEMENTS(vc, "vc :");
+//    auto pos = std::remove_if(pbegin, pend, isOdd);
+//    PRINT_ELEMENTS(pbegin, pos, "myints:");
+
+    std::replace(pbegin, pend, 20, 11);
+    PRINT_ELEMENTS(myints, "myints: ");
+
+    std::replace_if(pbegin, pend, isOdd, 5);
+    PRINT_ELEMENTS(myints, "myints: ");
+
+    std::replace_copy(pbegin, pend, vc.begin(), 20, 11);
+    PRINT_ELEMENTS(vc, "vc: ");
+
+    std::replace_copy_if(pbegin, pend, vc.begin(), isOdd, 11);
+    PRINT_ELEMENTS(vc, "vc: ");
+
+    std::reverse(vc.begin(), vc.end());
+    PRINT_ELEMENTS(vc, "vc: ");
+
+    std::reverse_copy(vc.begin(), vc.end(), ostream_iterator<int>(cout, "-"));
+    std::cout << std::endl;
+    PRINT_ELEMENTS(vc, "vc: ");
+
+    std::rotate(vc.begin(), vc.begin()+3, vc.end());
+    PRINT_ELEMENTS(vc, "vc: ");
+    std::rotate_copy(vc.begin(), vc.begin()+3, vc.end(), ostream_iterator<int>(cout, "-"));
+    std::cout << std::endl;
+    PRINT_ELEMENTS(vc, "vc: ");
+
+    auto pos = std::search(pbegin, pend, vc.begin(), vc.end());
+    if (pos != pend){
+        std::cout << *pos << " and distance to begin is :" << std::distance(pbegin, pos) << std::endl;
+    }else{
+        std::cout << "no search!" << std::endl;
+    }
+}
+
+void test_set()
+{
+    std::set<int> s1{1,2,3,4,5};
+    std::set<int> s2{2,3,4, 6};
+    std::set<int> s3;
+    std::set<int> s4;
+    std::set<int> s5;
+    std::set<int> s6;
+
+    PRINT_ELEMENTS(s1, "s1 [init]: ");
+    PRINT_ELEMENTS(s2, "s2 [init]: ");
+
+    std::set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(s3, s3.begin())); //注意这里s3迭代器
+    PRINT_ELEMENTS(s3, "s1 and s2 [difference]: "); //差集[在第一个集合，但是不在第二个集合种]
+
+    std::set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(s4, s4.begin())); //注意这里s3迭代器
+    PRINT_ELEMENTS(s4, "s1 and s2 [intersection]: "); //交集
+
+    std::set_union(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(s5, s5.begin())); //注意这里s3迭代器
+    PRINT_ELEMENTS(s5, "s1 and s2 [union]: "); //合集
+
+    std::set_symmetric_difference(s1.begin(), s1.end(), s2.begin(), s2.end(), inserter(s6, s6.begin())); //注意这里s3迭代器
+    PRINT_ELEMENTS(s6, "s1 and s2 [symmetric_diffenence]: "); //对称差集[在一个集合,但是并不在另一个集合种]
+
+    std::array<int,5> foo{1,2,3,4,5};
+    PRINT_ELEMENTS(foo, "foo: ");
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    shuffle(foo.begin(), foo.end(), std::default_random_engine(seed));
+    PRINT_ELEMENTS(foo, "foo [shuffle]: ");
+//    shuffle(s1.begin(), s1.end(), std::default_random_engine(seed)); //ERROR...
+//    PRINT_ELEMENTS(s1, "s1 [shuffle]: ");
 }
 
 void test_algo()
@@ -441,9 +641,13 @@ void test_algo()
     test_generate();
     test_heap();
     test_part();
+    test_permutation();
+    test_bound();
+    test_remove();
+    test_set();
     **/
 
-    test_permutation();
+    test_part();
 }
 
 
