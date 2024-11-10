@@ -470,6 +470,15 @@ void test_part()
     std::unique_copy(vc.begin(), vc.end(), v2.begin());
     PRINT_ELEMENTS(v2, "v2[unique-copy]: ");
 
+    if (std::equal(vc.begin(), vc.end(), v2.begin())){
+        std::cout << "can yhou fell " << std::endl;
+    }
+
+    auto pair = std::equal_range(vc.begin(), vc.end(), 11);
+    std::cout << "first: [" << *(std::get<0>(pair)) << std::endl;
+    std::cout << "second: [" << *(std::get<1>(pair)) << std::endl;
+
+
 //    vc.resize(std::distance(vc.begin(), it));
 //    std::unique(vc.begin(), vc.end(), myfunction);
 //    PRINT_ELEMENTS(vc, "vc[unique]: ");
