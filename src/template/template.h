@@ -9,6 +9,7 @@
 #include <type_traits>
 #include <deque>
 #include <iterator>
+#include <tuple>
 
 class main {
 
@@ -246,7 +247,7 @@ std::ostream& operator<<(std::ostream& os, C<I,B> const& m)
 class C1{
 public:
     template<int I>
-    getI(const C<I, false>& c) const { return c._i;}
+    int getI(const C<I, false>& c) const { return c._i;}
 };
 
 /**
@@ -397,8 +398,286 @@ Stackkk<T,Cont>& Stackkk<T, Cont>::operator=(const Stackkk<T2,Cont2>& st)
     return *this;
 }
 
+//template <typename T>
+//void printV(T arg)
+//{
+//    std::cout << "arg:" << arg << std::endl;
+//}
+
+template <typename T>
+void printV(T& arg)
+{
+    if (std::is_array<T>::value){
+        std::cout << "is_array" << std::endl;
+    }
+
+    if (std::is_integral<T>::value){
+        std::cout << "is int" << std::endl;
+    }
+
+    std::cout << "arg[&]:" << arg << std::endl;
+}
+
+template <typename T>
+void printV(T const& arg)
+{
+    std::cout << "arg[const&]:" << arg << std::endl;
+}
+
+template <typename T>
+void outR(T & arg)
+{
+    static_assert(!std::is_const<T>::value, "out parameter of foo<T>(T&) us const");
+    std::cout << "arg[const&]:" << arg << std::endl;
+}
+
+template <typename T, typename = typename std::enable_if<!std::is_const<T>::value>::type>
+void outR(T & arg)
+{
+//    static_assert(!std::is_const<T>::value, "out parameter of foo<T>(T&) us const");
+    std::cout << "arg[const&]:" << arg << std::endl;
+}
+
+//c20
+//template <typename T>
+//requires !std::is_const<T>::value
+//void outR(T & arg)
+//{
+//    static_assert(!std::is_const<T>::value, "out parameter of foo<T>(T&) us const");
+//    std::cout << "arg[const&]:" << arg << std::endl;
+//}
+
+template <typename T>
+void passR(T&& arg){
+    std::cout << "T&& arg" << arg << std::endl;
+}
+
+template<typename T>
+class Func{
+public:
+    bool operator()(T & arg){
+        std::cout << "T&& arg" << arg << std::endl;
+        return false;
+    }
+};
+
+template<typename T, T Z= T{}>
+class RefMem{
+private:
+    T zero;
+public:
+    RefMem() : zero{Z}{}
+};
+
+template<typename T>
+class Node{
+    using Type = T;
+    using Pointer = T*;
+    using Rerfence = T&&;
+    Node *next;
+    Node<Type>* previous;
+    Node<T*>* parent;
+
+};
+
+class Factory;
+
+template<typename T>
+class Tree{
+    friend class Factory;
+    friend class Node<T>;
+};
 
 
+template <typename T1, typename T2>
+void combine(T1, T2);
+
+template <typename XX>
+class Mixer{
+    friend void combine<>(int&,int &);
+    friend void combine<int, int>(int,int);
+    friend void combine<char>(char,int &);
+//    friend void combine<char>(char&,int &);
+    friend void combine<>(long, long);
+    using ELement = XX;
+};
+
+template class Mixer<int>;
+
+template<typename T>
+typename T::ElementT at(T a ,int i)
+{
+    return a[i];
+}
+
+template<char...> int operator "" _B7();
+
+//template<char... cs>
+//int operator"" _B7()
+//{
+//    std::array<char, sizeof...(cs)> chars{cs...};
+//    for(char c : chars){
+//        std::cout << "'" << c << "'";
+//    }
+//
+//    std::cout << std::endl;
+//    return ...;
+//}
+template<typename T>
+int ff(T, T x= 42)
+{
+    std::cout << " template<T>" << std::endl;
+    return x;
+}
+
+//template<>
+//int ff(int, int x= 33)
+//{
+//    std::cout << " template<int>" << std::endl;
+//    return x;
+//}
+
+class A11{
+public:
+    void assign()
+    {
+        std::cout << "A! assign" << std::endl;
+    }
+};
+
+class B11 : public A11{
+public:
+    void assign()
+    {
+        std::cout << "B! assign" << std::endl;
+    }
+};
+
+void readData() {
+    std::string data;
+    std::getline(std::cin, data);
+    std::cout << "Data entered: " << data << std::endl;
+}
+
+bool action() { // 你的动作逻辑
+    return true; // 示例返回值
+}
+template <typename T>
+struct AccumulationTraits;
+
+template <>
+struct AccumulationTraits<int>
+{
+    using AccT = int;
+    static constexpr AccT zero()
+    {
+        return 0;
+    }
+};
+
+template <>
+struct AccumulationTraits<float>
+{
+    using AccT = float;
+    static constexpr AccT zero()
+    {
+        return 0.0f;
+    }
+};
+
+class SumPolicy{
+public:
+    template<typename T1, typename T2>
+    static void accumulate(T1&total, T2 const& value){
+        std::cout << "value:" << value << std::endl;
+        total += value;
+    }
+};
+
+class MultPolicy{
+public:
+    template<typename T1, typename T2>
+    static void accumulate(T1&total, T2 const& value){
+        total *= value;
+    }
+};
+
+template<typename T,
+        typename Policy = SumPolicy,
+        typename Traits = AccumulationTraits<T>>
+typename Traits::AccT accum(T const* beg, T const*end)
+{
+    using AccT = typename Traits::AccT;
+    AccT total = Traits::zero();
+    while(beg != end){
+        Policy::accumulate(total, *beg);
+        ++beg;
+    }
+
+    return total;
+}
+
+template<typename T>
+struct RemoveRefenenceT{
+    using Type = T;
+};
+
+template<typename T>
+struct RemoveRefenenceT<T&>{
+    using Type = T;
+};
+
+template<typename T>
+struct RemoveRefenenceT<T&&>{
+    using Type = T;
+};
+
+template<typename T>
+using RemoveRefenence = typename RemoveRefenenceT<T>::Type;
+
+template<unsigned N>
+struct bbinary
+{
+    static unsigned const value = bbinary<N/10>::value * 2 + N % 10;
+};
+
+template<>
+struct bbinary<0>
+{
+    static unsigned const value = 0;
+};
+
+template<typename T, typename U>
+void printx(T rem, U const& pair)
+{
+    std::cout << rem << "(" << pair.first << ", " << pair.second << ")\n";
+}
+
+struct Foo
+{
+    Foo(std::tuple<int, float> tp)
+    {
+        std::cout << "(" << std::get<0>(tp) << "," << std::get<1>(tp) << ")"<< std::endl;
+        std::cout << "从元组构造Foo\n";
+    }
+
+    Foo(int f1, float f2)
+    {
+        std::cout << "(" << f1 << "," << f2 << ")"<< std::endl;
+        std::cout << "从 int和float 构造Foo\n";
+    }
+};
+
+template<>
+struct std::hash<std::pair<int,int>>
+{
+    std::size_t operator()(const std::pair<int, int> p) const
+    {
+        std::hash<int> f1;
+        return std::hash<int>()(p.first) ^ std::hash<int>()(p.second);
+//        return f1(p.first) ^ f1(p.second);
+    }
+};
 
 
 #endif //UNTITLED_MAIN_H

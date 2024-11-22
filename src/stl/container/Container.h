@@ -102,7 +102,7 @@ std::ostream& operator<<(ostream& s, const std::chrono::duration<V,R>& d){
  * c.crbegin();
  * c.crend();
  *
- * tuple inferface
+ * tuple interface
  * tuple_size()
  * tuple_element()
  * get<>()
