@@ -1,0 +1,30 @@
+student name : Lisa: Miller
+student id: 890238
+Number of courses: 4
+Course No: Course Name Credit Grade
+CSC201 Mathematics 4 A
+CSC478 ComputerSci 3 B
+HIS356 History 3 A
+PHY357 Physics 3 B
+------------------
+student name : Bill: Wilton
+student id: 798324
+Number of courses: 5
+Course No: Course Name Credit Grade
+BIO234 Biology 4 A
+CHM256 Chemistry 4 C
+ENG378 English 3 B
+MTH346 Mathematics 3 C
+PHL534 Philosophy 3 A
+------------------
+student name : Dandy: Goat
+student id: 746333
+Number of courses: 6
+Course No: Course Name Credit Grade
+BUS128 Business 3 C
+CHM348 Chemistry 4 B
+CSC201 ComputerSci 3 B
+ENG328 English 3 B
+HIS101 History 3 A
+MTH137 Mathematics 3 A
+------------------
