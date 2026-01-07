@@ -12,7 +12,7 @@
 
 class Report {
 public:
-    Report(){}
+    Report() = default;
     void read();
     void result();
     void quit(){cout << "bye bye!!" << endl;}

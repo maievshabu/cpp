@@ -11,7 +11,7 @@ using namespace std;
 
 class Course {
 public:
-    Course(){}
+    Course() = default;
     Course(string name, string no, unsigned int credit, char grade)
             :courseName(name),courseNo(no),courseCredit(credit),courseGrade(grade){}
     void setCourse(string name, string no, unsigned int credit, char grade){
@@ -26,7 +26,7 @@ public:
     bool operator==(const Course& oth)const{
         return courseNo == oth.courseNo;
     }
-    bool operator==(const string cNo)const{
+    bool operator==(const string& cNo)const{
         return courseNo == cNo;
     }
     string getCourseNo()const{return courseNo;}
@@ -37,8 +37,8 @@ public:
 private:
     string courseName;
     string courseNo;
-    unsigned int courseCredit;
-    char courseGrade;
+    unsigned int courseCredit{};
+    char courseGrade{'*'};
 };
 
 #endif //STUDENT_COURSE_H

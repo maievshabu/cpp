@@ -10,14 +10,14 @@ using namespace std;
 
 class Person {
 public:
-    Person(){}
+    Person() = default;
     Person(string first, string last): _lastName(last),_firstName(first){}
     void set(string first, string last){
         _firstName = first;
         _lastName = last;
     }
     friend ostream& operator<<(ostream&os, const Person& p){
-        return os << p._firstName << ": " << p._lastName;
+        return os << p._firstName << " " << p._lastName;
     }
 private:
     string _firstName;

@@ -18,16 +18,16 @@ void menu(string title){
 }
 
 int main(){
-    menu("Welcome to my room!!!");
-
     Report report;
+    report.read();
 
     char choice;
     int id;
     bool isOk = false;
     string no;
-    report.read();
+
     while(std::cin >> choice){
+        menu("Welcome to my room!!!");
         switch(choice){
             case '1':
                 std::cout << "Enter your id: " << std::endl;
@@ -44,9 +44,11 @@ int main(){
                 report.result();
                 break;
             case 'q':
-            default:
                 isOk = true;
                 report.quit();
+                break;
+            default:
+                std::cout << "Invalid choice, please try again." << std::endl;
                 break;
         }
 

@@ -46,12 +46,6 @@ void Report::read() {
     }
 }
 
-//void Report::result(){
-//    for(Student& stu: students){
-//        std::cout << stu << std::endl;
-//    }
-//}
-
 void Report::result(){
     ofstream os("../xs.txt");
     if (!os){
@@ -61,8 +55,13 @@ void Report::result(){
 
     for(Student& stu: students){
         os << stu;
-        os << "------------------" << std::endl;
         std::cout << stu << std::endl;
+
+        for (const auto& c : stu.getCourses()) {
+            std::cout << c << std::endl;
+        }
+        std::cout << "------------------" << std::endl;
+
         std::cout << "-*-*-*-*-*-*-*-*-*-*-*-*-*" << std::endl;
     }
 }
@@ -79,18 +78,18 @@ void Report::search(int id) {
 }
 
 void Report::search(string courseNo) {
-    bool flag = false;
+    bool found = false;
     for(const auto& stu: students){
-        const Course* c = stu.getCourse(courseNo);
+        const Course* c = stu.findCourse(courseNo);
         if (c != nullptr){
-            flag =  true;
+            found =  true;
             std::cout << "student id: " << stu.getId() << std::endl;
             std::cout << *c << std::endl;
             std::cout << "-*-*-*-*-*-*-*-*-*-*-*-*-*" << std::endl;
         }
     }
 
-    if (flag == false){
+    if (found == false){
         std::cout << "no found courseNo: " << courseNo << std::endl;
     }
 }

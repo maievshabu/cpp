@@ -14,21 +14,22 @@
 using namespace std;
 class Student{
 public:
-    Student(){}
+    Student() = default;
     Student(Person p, vector<Course> c):person(p), courses(c){}
     bool operator==(int sid)const{
         return id == sid;
     }
     int getId()const{return id;}
-    const Course* getCourse(const string&)const;
+    const Course* findCourse(const string&)const;
     void setStudent(int id, int courseNums, bool isPaid);
+    const vector<Course>& getCourses() const { return courses; }
     friend ostream& operator<<(ostream& os, const Student& stu);
 private:
     Person person;
     vector<Course>courses;
-    int id;
-    int courseNums;
-    bool isPaid;
+    int id{};
+    int courseNums{};
+    bool isPaid{};
 };
 
 #ifdef TRUE
