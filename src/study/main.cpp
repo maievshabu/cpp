@@ -23,13 +23,13 @@ int main(int args, char ** argv){
 //        _Tpl::test1();
 //        __Pair::test();
 //        __Tuple::test();
-//        __smart::test();
+        __smart::test();
 //    __smart::test_person();
 //        __smart::test();
 //        __smart::test();
 //        __trait::test();
 
-        __byte::test();
+//        __byte::test();
     }
 
     return 1;

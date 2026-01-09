@@ -51,6 +51,24 @@ namespace ptr{
         }
     }
 
+    void testxx1()
+    {
+        shared_ptr<int> s1= make_shared<int>(10);
+        weak_ptr<int> w1(s1);
+        std::cout << *s1 << std::endl;
+        shared_ptr<int> s2(move(s1));
+        std::cout << "s2: " << s2.use_count() << std::endl;
+        std::cout << "w1: " << w1.use_count() << std::endl;
+        std::cout << s1.use_count() << std::endl;
+        s1.reset();
+
+        //这里有个新认知:w1不随着s1的销毁二销毁，他始终指向了原来的那个内存区间！！！
+
+        if (auto sp = w1.lock()){
+            std::cout << "sp: " << *sp << std::endl;
+        }
+    }
+
     void testx1(){
         std::shared_ptr<void()> ee(fun, del);
         (*ee)();

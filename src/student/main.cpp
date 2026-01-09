@@ -9,7 +9,7 @@
 using namespace std;
 void test(string);
 
-void menu(string title){
+void menu(const string& title){
     std::cout << title << std::endl;
     std::cout << "0: show all"<< std::endl;
     std::cout << "1: search id "<< std::endl;
@@ -26,7 +26,7 @@ int main(){
     bool isOk = false;
     string no;
 
-    while(std::cin >> choice){
+    while(!isOk && std::cin >> choice){
         menu("Welcome to my room!!!");
         switch(choice){
             case '1':
@@ -50,10 +50,6 @@ int main(){
             default:
                 std::cout << "Invalid choice, please try again." << std::endl;
                 break;
-        }
-
-        if (isOk){
-            break;
         }
     }
 

@@ -64,6 +64,80 @@ namespace ptr{
 
     void test();
     void test(int);
+
+    namespace d108{
+        class Person{
+        public:
+            //构造
+            Person() = default;
+            //构造
+            Person(int age): pAge(make_shared<int>(age)){
+                std::cout << "Person(int)" << std::endl;
+            }
+            //拷贝构造
+            Person(const Person& oth){
+                std::cout << "Person const(Person&)" << std::endl;
+                pAge = oth.pAge;
+            }
+            //移动构造
+            Person(Person&& oth) noexcept{
+                std::cout << "Person (Person&&)" << std::endl;
+                pAge = move(oth.pAge);
+            }
+            //拷贝赋值
+            Person& operator=(const Person& oth){
+                std::cout << "Person& operator=(const Person&)" << std::endl;
+                if (this != &oth){
+                    pAge = oth.pAge;
+                }
+
+                return *this;
+            }
+            //移动赋值
+            Person& operator=(Person&& oth) noexcept{
+                std::cout << "Person& operator=(Person&&)" << std::endl;
+                if (this != &oth){
+                    pAge = move(oth.pAge);
+                }
+
+                return *this;
+            }
+            //析构
+            ~Person(){
+                std::cout << "~Person(): " << "use_count: " << pAge.use_count() << std::endl;
+            }
+            int showAge()const{
+                return pAge ? *pAge : -99999;
+            }
+        private:
+            shared_ptr<int> pAge;
+        };
+    }
+    namespace d108{
+        struct Child;
+        struct Parent{
+            Parent(){std::cout << "Parent()" << std::endl;}
+            ~Parent(){std::cout << "~Parent()" << std::endl;}
+            shared_ptr<Child> child;
+        };
+
+        struct Child{
+            Child(){std::cout << "Child()" << std::endl;}
+            ~Child(){std::cout << "~Child()" << std::endl;}
+            weak_ptr<Parent> parent;
+        };
+
+        struct xyz{
+            shared_ptr<Parent> createFamily(){
+                auto p = make_shared<Parent>();
+                auto c = make_shared<Child>();
+                p->child = c;
+                c->parent = p;
+
+                return p;
+            }
+        };
+    }
 }
 
 #endif //WEB_PTR_H

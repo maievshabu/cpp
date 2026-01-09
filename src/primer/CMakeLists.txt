@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(study)
+project(primer)
 
 set(CMAKE_CXX_STANDARD 11)
 #
@@ -9,8 +9,7 @@ set(CMAKE_CXX_STANDARD 11)
 # 这意味着：可能既不会调用拷贝构造，也不会调用移动构
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-elide-constructors")
 
-add_executable(study
+add_executable(primer
         main.cpp
-        ptr.cpp
-        template.cpp
+        a.cpp
         )

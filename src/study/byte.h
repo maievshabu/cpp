@@ -3,6 +3,7 @@
 //
 
 #include "inc.h"
+#include <cstring>
 
 #ifndef STUDY_BYTE_H
 #define STUDY_BYTE_H
@@ -179,7 +180,7 @@ namespace __byte{
     };
 
     struct B : A {
-        void f(){
+        void f() const{
             std::cout << "B::f()" << std::endl;
         }};
     struct C : virtual B {
@@ -194,7 +195,156 @@ namespace __byte{
         using A::f;
     };
 
+    //返回const对象
+    const B* xyz(const int&){
+        const B* a = new B;
+        return a;
+    }
+
+    template<typename T>
+    class Home{
+    public:
+        Home(){
+            hLocation = nullptr;
+        }
+        Home(T* location){
+            std::cout << "Home(T* location)" << std::endl;
+            if (location){
+                hLocation = new T(*location);
+            }else{
+                hLocation = nullptr;
+            }
+        }
+        Home(const Home& oth){
+            std::cout << "Home(const Home& oth)" << std::endl;
+            if (oth.hLocation){
+                hLocation = oth.hLocation;
+            }else{
+                hLocation = nullptr;
+            }
+        }
+        Home& operator=(const Home& oth){
+            std::cout << "Home& operator=(const Home& oth)" << std::endl;
+            if (this == & oth){
+                return *this;
+            }
+            delete[] hLocation;
+            if (oth.hLocation){
+                hLocation = oth.hLocation;
+            }else{
+                hLocation = nullptr;
+            }
+
+            return *this;
+        }
+        const T getLocation(){
+            return *hLocation;
+        }
+        ~Home(){
+            delete hLocation;
+        }
+    private:
+        T* hLocation{};
+    };
+
+    template<>
+    class Home<string>
+    {
+    public:
+        Home() = default;
+        Home(string location){
+            std::cout << "Home(string* location)" << std::endl;
+            hLocation = location;
+        }
+        Home(const Home& oth){
+            std::cout << "Home(const Home& oth)" << std::endl;
+            hLocation = oth.hLocation;
+        }
+        Home& operator=(const Home& oth){
+            std::cout << "Home& operator=(const Home& oth)" << std::endl;
+            if (this == & oth){
+                return *this;
+            }
+
+            hLocation = oth.hLocation;
+            return *this;
+        }
+        const string getLocation(){
+            return hLocation;
+        }
+        ~Home(){
+        }
+    private:
+        string hLocation{};
+    };
+
     void test(){
+        {
+//            char* location{"West Life"};
+//            Home<char> h2(location);
+//            std::cout << h2.getLocation() << std::endl;
+
+            Home<string> h3("West Life");
+            std::cout << h3.getLocation() << std::endl;
+
+            Home<string> h4(h3);
+            std::cout << h4.getLocation() << std::endl;
+
+            Home<string> h5;
+            h5 = h4;
+            std::cout << h5.getLocation() << std::endl;
+
+            int a = 10;
+            int *pa = &a;
+            Home<int> h6(pa);
+            std::cout << h6.getLocation() << std::endl;
+        }
+
+        //左值---有名字，有地址
+        //右值---临时对象，表达式，字面量
+
+//        int &&a2 = a1; //左值不能赋值右值吗？？？
+//        int &&a2 = a; //左值 不能赋值右值;
+    }
+
+    void test03(){
+
+//        const char* s1 = "hello"; //指向不可改
+//        s1 = "hello world";
+//        char* const s2 = "hello"; //指针不可改
+
+        {
+            int a = 10;
+            int b = 20;
+            int *pb = &b;
+            const int* p1 = &a; //
+            int* const p2 = &a;
+            std::cout << a << std::endl;
+        }
+        int a = 10; //右值可以赋值左值
+        int &a0 = a;
+        int &&a1 = 10;
+        std::cout << &a << " " << a  << std::endl;
+        std::cout << &a0 << " " << a0 << std::endl;
+        std::cout << &a1 << " " << a1 << std::endl;
+
+        std::cout << *(&a) << std::endl;
+        std::cout << *(&a0) << std::endl;
+        std::cout << *(&a1) << std::endl;
+
+        int &&a2 = move(a1);
+        int &&a3 = move(a1);
+        std::cout << &a1 << " " << a1 << std::endl;
+
+//        string s1("hello world");
+//        std::cout << "s1: " << s1 << std::endl;
+//        string s2(s1);
+//        std::cout << "s1: " << s1 << std::endl;
+//        string s3(move(s1));
+//        std::cout << "s1: " << s1 << std::endl;
+    }
+
+    void test02(){
         E e;
         e.f();
         e.E::f();

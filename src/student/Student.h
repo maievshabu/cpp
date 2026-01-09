@@ -10,6 +10,7 @@
 #include <vector>
 #include "Person.h"
 #include "Course.h"
+#include <optional>
 
 using namespace std;
 class Student{
@@ -24,6 +25,7 @@ public:
     void setStudent(int id, int courseNums, bool isPaid);
     const vector<Course>& getCourses() const { return courses; }
     friend ostream& operator<<(ostream& os, const Student& stu);
+    void gda(); //计算绩点
 private:
     Person person;
     vector<Course>courses;

@@ -134,10 +134,6 @@ namespace __smart{
 
         {
             std::unique_ptr<std::string> up(new std::string("nico"));
-//            std::unique_ptr<std::string,void(*)(string *)> up(new std::string("nico"), [](string * p){
-//                std::cout << "~" << std::endl;
-//                delete p;
-//            });
             std::unique_ptr<std::string, std::function<void(string*)>> upx(new std::string("nico"), [](string* p){
                 std::cout << "~" << std::endl;
                 delete p;
@@ -151,7 +147,6 @@ namespace __smart{
 
             std::unique_ptr<int, decltype(l)> up3(new int[10]{1,100,1,1}, l);
             std::cout << up3.get()[1] << std::endl;
-//            std::cout << (*up3)[0] << std::endl;
 
             (*up)[0] = 'N';
 
@@ -163,23 +158,11 @@ namespace __smart{
             std::cout << *sp << std::endl;
 
             if (up != nullptr){
-//            if (up){
                 std::cout << *up << std::endl;
             }else{
                 std::cerr << "hello world!" << std::endl;
             }
         }
-
-//        classA* ptr = new classA;
-//        try{
-//
-//        }catch(...){
-//            delete ptr;
-//            throw;
-//        }
-//
-//        delete ptr;
-//        std::unique_ptr<classA> ptr(new classA);
     }
 
     void test_person(){
@@ -313,8 +296,209 @@ namespace __smart{
         }); //error
     }
 
+    class Home{
+    public:
+        Home() = default;
+        Home(const string&  name){
+            std::cout << "Home(string * name)" << std::endl;
+           address = new string(name);
+        }
+        //拷贝构造
+        Home(const Home& oth){
+            std::cout << "Home(const Home& oth)" << std::endl;
+            if (oth.address != nullptr){
+                address = new string(*oth.address);
+            }
+        }
+        Home(Home&& oth) noexcept{
+            std::cout << "Home(Home&& oth) noexcept" << std::endl;
+            address = oth.address;
+            oth.address = nullptr;
+        }
+        //拷贝赋值
+        Home& operator=(const Home& oth){
+            std::cout << "Home& operator=(const Home& oth)" << std::endl;
+            if (this != &oth){
+                delete address;
+                if (oth.address != nullptr){
+                    address = new string(*oth.address);
+                }else{
+                    address = nullptr;
+                }
+            }
+            return *this;
+        }
+        //移动赋值
+        Home& operator=(Home&& oth) noexcept{
+            std::cout << "Home& operator=(Home&& oth) noexcept" << std::endl;
+
+            if (this != &oth){
+                std::swap(address, oth.address);
+//                delete address;
+//                address = oth.address;
+//                oth.address = nullptr;
+            }
+            return *this;
+        }
+
+        const string& getAddress() const{
+            static const std::string empty{};
+            return address ? *address : empty;
+        }
+        ~Home(){
+            std::cout << "~Home()" << std::endl;
+            delete address;
+        }
+    private:
+        string * address{};
+    };
+
+    class Home2{
+    public:
+        Home2() = default;
+        Home2(string address){
+            std::cout << "Home2(string address)" << std::endl;
+            hAddress = make_shared<string>(address);
+        }
+        //拷贝构造
+        Home2(const Home2& oth){
+            std::cout << "Home2(const Home2& oth)" << std::endl;
+            hAddress = oth.hAddress;
+        }
+        //拷贝移动
+        Home2(Home2&& oth) noexcept{
+            std::cout << "Home2(Home2&& oth)" << std::endl;
+            hAddress = move(oth.hAddress);
+        }
+        Home2& operator=(const Home2& oth){
+            std::cout << "Home2& operator=(const Home2& oth)" << std::endl;
+            hAddress = oth.hAddress;
+        }
+
+        Home2& operator=(Home2&& oth){
+            std::cout << "Home2& operator=(const Home2& oth)" << std::endl;
+            hAddress = move(oth.hAddress);
+        }
+
+        ~Home2(){
+            std::cout << "~Home2()" << std::endl;
+        }
+        const string getAddress()const{
+            return hAddress != nullptr ? *hAddress : " ";
+        }
+    private:
+        shared_ptr<string> hAddress;
+    };
+
+    class Home3{
+    public:
+        Home3() = default;
+        Home3(string address): hAddress(new string(address)){
+            std::cout << "Home3(string address)" << std::endl;
+        }
+        //拷贝构造
+        Home3(const Home3& oth):hAddress(new string(*oth.hAddress)){
+            std::cout << "Home3(const Home2& oth)" << std::endl;
+        }
+
+        Home3(Home3&& oth) noexcept{
+            std::cout << "Home3(Home3&& oth)" << std::endl;
+            hAddress = move(oth.hAddress);
+        }
+
+        Home3& operator=(const Home3& oth){
+            if (this != &oth){
+                hAddress = std::unique_ptr<string>(new string(*oth.hAddress));
+            }
+
+            return *this;
+        }
+
+        Home3& operator=(Home3&& oth) noexcept{
+            if (this != &oth){
+                hAddress = move(oth.hAddress);
+            }
+            return *this;
+        }
+
+        ~Home3(){
+            std::cout << "~Home3()" << std::endl;
+        }
+        const string getAddress()const{
+            return hAddress != nullptr ? *hAddress : " ";
+        }
+    private:
+        unique_ptr<string> hAddress;
+    };
+
     void test(){
-        test_unique();
+        unique_ptr<int> u1(new int(10));
+        std::cout << *u1 << std::endl;
+        std::cout << u1.get() << std::endl; //裸指针
+        unique_ptr<int> u2(move(u1));
+        std::cout << *u2 << std::endl;
+        auto p = u2.release();
+        std::cout << p << ": " << *p << std::endl;
+        unique_ptr<int> u3;
+        u3 = unique_ptr<int>(new int(10));
+        std::cout << u3.get() << std::endl;
+    }
+
+    void test108x(){
+        {
+            Home3 h("Px- 01 Big Location");
+            Home3 h1(h);
+            Home3 h2(move(h));
+            h1 = Home3("can you dodo");
+            h2 = h1;
+        }
+
+        cout << "构造函数" << endl;
+        Home2 h1("Shang Hai");
+
+        cout << "拷贝构造" << endl;
+        Home2 h2(h1);
+
+        cout << "移动构造" << endl;
+        Home2 h3(move(h1));
+
+        cout << "拷贝赋值" << endl;
+        h2 = h3;
+
+        cout << "移动赋值" << endl;
+        h3 = Home2("Bei Jing");
+    }
+
+    void test108(){
+        string* s1 = new string("Px-01 abc");
+        string* && s2 = move(s1);
+        string* && s3 = move(s2);
+
+        int a = 10;
+        int &a1 = a;
+        int &&a2 = move(a);
+        int* pa = &a;
+        int*& pa1 = pa;
+        int*&& pa2 = move(pa);
+
+        std::cout << pa << std::endl;
+        std::cout << pa1 << std::endl;
+        std::cout << pa2 << std::endl;
+
+        std::cout << "--------" << std::endl;
+
+        std::cout << s1 << std::endl;
+        std::cout << s2 << std::endl;
+
+        std::cout << "--------" << std::endl;
+
+        Home h1("Px-01-x ShanghaiRoad!");
+        std::cout << h1.getAddress() << std::endl;
+        Home h2(move(h1));
+        std::cout << h2.getAddress() << std::endl;
+        Home h3;
+        h3 = move(h2);
+        std::cout << h3.getAddress() << std::endl;
     }
 }
 
