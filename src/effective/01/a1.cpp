@@ -20,11 +20,15 @@ void outOfMem(){
 
 void d109::test() {
     {
+        auto f = std::forward<int>(std::move(1));
+        std::cout << f << std::endl;
+    }
+#ifdef MAIEV
+    {
         std::set_new_handler(outOfMem);
         int * pBig = new int[1000000000000];
     }
 
-#ifdef MAIEV
     {
         std::cout << Factorial<5>::value << std::endl;
         std::cout << Factorial<10>::value << std::endl;

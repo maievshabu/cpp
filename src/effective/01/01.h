@@ -819,6 +819,7 @@ namespace d113{
         enum {value = 1};
     };
 
+
 }
 
 #endif //EFFECTIVE_01_H
