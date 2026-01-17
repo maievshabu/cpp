@@ -8,6 +8,14 @@ using namespace d117;
 
 void d117::test(){
     {
+        /**
+         *
+         * p35 1.3列表初始化
+         *
+         */
+    }
+#ifdef MAIEVV
+    {
 
         /**
          * 函数模板的默认模板参数
@@ -73,7 +81,6 @@ void d117::test(){
          * using === typedef
          */
     }
-#ifdef MAIEVV
     {
 //        auto x = add<decltype(1+1.0)>( 1, 1.0);
         auto x = add( 1, 1.0);
