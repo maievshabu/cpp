@@ -9,12 +9,237 @@ using namespace d117;
 void d117::test(){
     {
         /**
+         * P34
+         * 1.4 基于范围的for循环
+         * std::vector<int> arr={1,2,3}
          *
-         * p35 1.3列表初始化
+         * for(auto it=
+         *
+         * void do_count(int n){
+         *      std::cout << n << std::endl;
+         * }
+         * std::for_each(it.begin(),it.end(),do_count);
+         *
+         * for(auto n : arr){
+         *      std::cout << n << std::endl;
+         * }
+         *
+         * std::map<std::string, int> mm= {
+         *      {"1",1},{"2",2,},{"3",3}
+         * }
+         * for(auto& val: mm){
+         *      std::cout << val.first << "->" << val.second << std::endl;
+         * }
+         *
+         * std::set<int> ss{1,2,3};
+         * for(auto& val: ss){
+         *      std::cout << val ++ << std::endl; //error, val is const int&
+         * }
          *
          */
     }
+
 #ifdef MAIEVV
+    {
+        /**
+         *
+         * p22 1.3列表初始化
+         *
+         * int i_arr[3] = {1,2,3};
+         * struct A{
+         *      int x;
+         *      struct B{
+         *          int i;
+         *          int j;
+         *      };b
+         * }a={1,{2,3}}; //POD类型
+         *
+         * //拷贝初始化
+         *
+         * int i = 0;
+         * class Foo{
+         * public:
+         *  Foo(int){}
+         * } foo= 123; //需要拷贝构造函数
+         *
+         * //直接初始化
+         * int j(0);
+         * Foo bar(123);
+         *
+         *
+         * class Foo{
+         * public:
+         *      Foo(int){}
+         * private:
+         *      Foo(const Foo&);
+         * }
+         *
+         * Foo a1(123);
+         * Foo a2 = 123;//error Foo::Foo(const Foo&) is private
+         * Foo a3{123};
+         * Foo a4 = {1,2,3};
+         * int a5={3};
+         * int a6{3};
+         *
+         * int*a = new int{123};
+         * double b = double{12.12};
+         * int* arr= new int[3]{1,2,3};
+         *
+         * struct Foo{
+         *      Foo(int,double){}
+         * };
+         * Foo func(){
+         *      return {123, 123.00};
+         * }
+         * struct A{
+         *  int x;
+         *  int y;
+         * } a= {123,123}; //a.x=123,a.y=123;
+         * struct B{
+         *  int x;
+         *  int y;
+         *  B(int,int):x(0),y(0){}
+         * }a={123,123};//a.x=0,b.x=0;
+         * 聚合体类型:
+         * 1)类型是一个普通数组(int[10], char[],long[2][3]
+         * 2)类型是一个类(class, struct ,union)且
+         *  a)无用户自定义的构造函数
+         *  b)无私有private/protected的非静态数据类型
+         *  c)无基类
+         *  d)无虚函数
+         *  e)不能有{}和=直接吃哈哈的非静态数据成员
+         *
+         *  struct ST{
+         *  int x;
+         *  double y;
+         *  protected:
+         *  int z;
+         *  };
+         *
+         *  St s={1,2.5,1}; //error
+         *  struct Foo{
+         *  int x;
+         *  double y;
+         *  protected:
+         *  static int z;
+         *  };
+         *
+         *  struct ST{
+         *  int x;
+         *  double y;
+         *  virtual void f();
+         *  };
+         *  ST s{1,2.5}//error
+         *
+         *  struct Base{};
+         *  struct Foo : public Base{
+         *      int x;
+         *      double y;
+         *  };
+         *
+         *  Foo foo{1,2.5};//error
+         *
+         *  Foo foo{1,2.5};
+         *
+         *  struct ST{
+         *  int x;
+         *  double y= 0.0;
+         *  };
+         *  ST s{1,2.5}; //error
+         *
+         * struct ST{
+         * int x;
+         * double y;
+         * private:
+         * int z;
+         * };
+         * ST s{1,2.5,1} //error
+         *
+         * struct Foo{
+         *  ST st;
+         *  int x;
+         *  double y;
+         * };
+         *
+         * Foo foo{{},1.2.5}; //ok....
+         *
+         * 对于聚合类型，使用初始化列表相当于对其中的每一个元素分别赋值;
+         * 而对于非集合类型,则需要先自定义一个合适的构造函数，此时使用初始化列表将调用它对应的构造函数
+         *
+         * int arr[] {1,2,3};
+         * std::map<std::string, int> mm={
+         *  {"1",1},{"2", 2},{"3",3}
+         * };
+         * std::set<int> ss={1,2,3};
+         * std::vector<int> arr={1,2,3,4,5};
+         *
+         * class Foo{
+         *  public:
+         *  Foo(std::initializer_list<int>{}
+         * };
+         *
+         * Foo foo={1,2,3,4,5}; //ok
+         *
+         * class FooVector{
+         *      std::vector<int> content_;
+         * public:
+         *      FooVector(std::initializer_list<int>list){
+         *          for(auto it =list.begin(); it!=list.end(); it++){
+         *              content_.push_back(*it);
+         *          }
+         *      }
+         * }
+         * FooVector foo_1={1,2,3,4,5};
+         *
+         * class FooMap{
+         *      std::map<int,int>content_;
+         *      using pair_t = std::map<int,int>::value_type;
+         * public:
+         *        FooMap(std::initializer_list<pair_t>list{
+         *          for(auto it =list.begin(); it!=list.end(); it++){
+         *              content_.push_back(*it);
+         *          }
+         *        }
+         * }
+         *
+         * FooMap foo_2={{1,2},{3,6},{4,5}};
+         *
+         *
+         * void func(std::initlializer_list<int>l){
+         *      for(auto it = l.begin(); it != l.end(); it++){
+         *          std::cout << *i << std::endl;
+         *      }
+         * }
+         *
+         * func({});
+         * func({1,2,3});
+         *
+         * size(),begin(),end();
+         * std::initializer_list<int> list={1,2,3};
+         * size_t n = list.size(); // n== 3;
+         *
+         * 只能初始化或赋值
+         *
+         * int a = 1.1; //ok
+         * int b = {1.1}; //error
+         *
+         * float fa=1e40; //ok
+         * float fb={1e40}; //error
+         *
+         * float fc = (unsigned long long) -1; //ok
+         * float fd = {(unsigned long long)-1}; //error
+         * float fe = (unsigned long long )1; //ok
+         * float ff = {(unsigned long long)1}; //ok
+         *
+         * const int x = 1024, y=1;
+         * char c = x; //ok
+         * char d = {x}; //error
+         * char e = y; //ok
+         * char f = {y}; //error
+         *
+         * 在上面的各种隐式类型转换重，只要遇到了类型收窄的情况,初始化列表就不会允许这种转换发生。
+         */
+    }
     {
 
         /**
@@ -31,7 +256,7 @@ void d117::test(){
          *  }
          *
          *  template<typename T = int>
-         *  void func(typename identity<T>::type val, T = 0{}
+         *  void func(typename identity<T>::type val, T = 0){}
          *  func(123) // T -> int;
          *  func(123,123.0)//T->double;
          *
