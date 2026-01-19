@@ -1,0 +1,11 @@
+Artificial intelligence has rapidly evolved from a theoretical
+concept into a transformative force that shapes nearly every aspect
+of modern life. At its core, AI is the science of building systems
+that can learn, reason, and make decisions in ways that resemble human
+intelligence. These systems analyze vast amounts of data,
+recognize patterns, and adapt their behavior over time,
+allowing them to perform tasks ranging from language understanding
+to medical diagnosis. As AI continues to advance, it is not only enhancing
+productivity and efficiency but also redefining how people interact with technology.
+The challenge and opportunity ahead lie in guiding AI’s development responsibly,
+ensuring that its benefits are shared widely while its risks are carefully managed.
