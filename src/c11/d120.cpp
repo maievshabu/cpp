@@ -72,8 +72,165 @@ string test3(string s1, string s2){
     return s1 + s2;
 }
 
+#include "types.h"
+using namespace maiev;
+
+//递推终止函数
+void print(){
+    cout << endl;
+}
+
+template<typename T, typename T1>
+void print(T t1, T t2){
+    cout << t1 << " " << t2 << endl;
+}
+
+//展开函数
+template<class T, class... Other>
+void print(T t, Other... other){
+    cout << t << " ";
+    print(other...);
+}
+
+template<class T>
+void printarg(T t){
+    cout << t << endl;
+}
+
+template<class... Args>
+void expand(Args... args){
+//    int ar[] = {(printarg(args),0)...};
+//    std::initializer_list<int>{(printarg(args),0)...};
+    std::initializer_list<int> {([&]{cout << args << endl;}(),0)...};
+    cout << "***************" << endl;
+}
+
+#ifdef MAIEV
+template<std::size_t I = 0, typename Tuple>
+typename std::enable_if<I == std::tuple_size<Tuple>::value>::type printtp(Tuple){
+}
+
+template<std::size_t I = 0 , typename Tuple>
+typename std::enable_if< I < std::tuple_size<typename std::decay<Tuple>::type>::value>::type
+printtp(Tuple t){
+    std::cout << std::get<I>(t) << std::endl;
+    printtp<I + 1> (t);
+}
+
+template<typename... Args>
+void print(Args... args){
+    printtp(std::make_tuple(args...));
+}
+#endif
+
+template<typename... Args> struct Sum;//前向申明
+
+//可变参数模板类
+template<typename First, typename... Rest>
+struct Sum<First, Rest...>{
+    enum {value = Sum<First>::value + Sum<Rest...>::value};
+};
+
+//特化终止函数
+template<typename Last>
+struct Sum<Last>{
+    enum {value = sizeof(Last)};
+};
+
+template<int...>
+struct IndexSeq{};
+
+#ifdef MAIEV
+template<int N, int...Indexes>
+struct MakeIndexes : MakeIndexes<N-1,N-1, Indexes...>{};
+    template<int... Indexes>
+struct MakeIndexes<0, Indexes...>{
+    typedef IndexSql<Indexes...> type;
+};
+#endif
+template<int N, int...Indexes>
+struct MakeIndexes {
+    using type = typename MakeIndexes<N-1, N-1, Indexes...>::type;
+};
+template<int... Indexes>
+struct MakeIndexes<0, Indexes...>{
+    using type = IndexSeq<Indexes...>;
+};
+
+template<int... Indexes, typename ... Args>
+void print_helper(IndexSeq<Indexes...>, std::tuple<Args...>&& tup){
+    print(std::get<Indexes>(tup)...);
+}
+template<typename... Args>
+void printx(Args... args){
+    print_helper(typename MakeIndexes<sizeof...(Args)>::type(), std::make_tuple(args...));
+}
+
+template<typename T, typename ... Args>
+T* Instance(Args ... args){
+    return new T(args...);
+}
+
+template<typename T, typename ... Args>
+T* Instance(Args&& ... args){
+    return new T(std::forward<Args>(args)...);
+}
 
 void d120::test() {
+
+    using T = MakeIndexes<3>::type;
+    T t1;
+//    printx(t1);
+//    cout << typeid(T).name() << endl;
+
+    cout << "--------------------------" << endl;
+
+    using sum_t = Sum<int,double,unsigned>;
+    cout << Sum<int,double,unsigned>::value << endl;
+    cout << sum_t::value << endl;
+
+    expand(1,2,3,4,5);
+
+    print(1,2);
+    print(1,2,3);
+
+    std::cout << "*************************" << std::endl;
+
+//    cout << GetLeftSize<int>::value << endl;
+//    cout << GetLeftSizex<double>::value << endl;
+//    cout << GetLeftSize1<float>::value << endl;
+//
+//    using five = maiev::integral_constant<int, 5>;
+//    five f;
+//    int x = f;
+
+    cout << maiev::is_integral<int>::value << endl;
+    cout << maiev::is_integral<short int>::value << endl;
+    cout << maiev::is_integral<char16_t>::value << endl;
+    cout << maiev::is_integral<char32_t>::value << endl;
+    cout << maiev::is_void<int>::value << endl;
+    cout << maiev::is_void<void>::value << endl;
+    cout << maiev::is_array<void>::value << endl;
+    cout << maiev::is_array<int[]>::value << endl;
+    cout << maiev::is_array<Key[]>::value << endl;
+    cout << std::is_array<Key[]>::value << endl;
+
+
+    /**
+    struct AA{
+        AA(int x_):x(x_){}
+        operator int (){//将对象转换成()
+            return x;
+        }
+    private :
+        int x;
+    };
+
+    AA a(10);
+    int b = a;
+    std::cout << b << std::endl;
+     */
+
 
     /**
      * 2.5 unordered container 无序容器
@@ -83,6 +240,7 @@ void d120::test() {
      * unordered_multiset
      *
      */
+#ifdef MAIEV
     {
         std::unordered_map<std::string, std::string> m1;
         std::unordered_map<int, std::string> m2={
@@ -104,7 +262,6 @@ void d120::test() {
         };
     }
 
-#ifdef MAIEV
     {
         std::map<int,Complicated> m;
         int anInt = 4;

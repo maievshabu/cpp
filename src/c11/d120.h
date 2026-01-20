@@ -15,6 +15,7 @@ extern int g_destructCount;
 namespace d120 {
     void test();
 
+
     struct Key{
         std::string first;
         std::string second;
