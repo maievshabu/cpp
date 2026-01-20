@@ -331,7 +331,7 @@ namespace ch801{
 
         auto d3 = d1 -d2;
         cout << typeid(d3).name() << endl;
-        cout << "cout :" << d3.count() << endl;
+        cout << "count :" << d3.count() << endl;
         cout << chrono::duration_cast<chrono::seconds>(d3).count() << ": seconds" <<endl;
         cout << chrono::duration_cast<chrono::minutes>(d3).count() << ": minutes" <<endl;
         cout << chrono::duration_cast<chrono::hours>(d3).count() << ": hours" <<endl;
