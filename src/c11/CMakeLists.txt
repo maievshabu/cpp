@@ -14,4 +14,6 @@ add_executable(c11
         d117.cpp
         d119.cpp
         d120.cpp
+        d121.cpp
+        d122.cpp
         )

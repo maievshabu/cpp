@@ -176,25 +176,106 @@ T* Instance(Args&& ... args){
     return new T(std::forward<Args>(args)...);
 }
 
-void d120::test() {
+template<typename T, typename U>
+typename std::enable_if<std::is_convertible<T,U>::value ||
+                        std::is_convertible<U,T>::value, bool>::type
+compare(T t, U u){
+    return t == u;
+}
 
-    using T = MakeIndexes<3>::type;
-    T t1;
+bool compare(...){
+    return false;
+}
+
+template<int I, typename T, typename... Args>
+struct find_index {
+    static int call(std::tuple<Args...> const& t, T&& val) {
+        return compare(std::get<I>(t), val) ? I :
+               find_index<I - 1, T, Args...>::call(t, std::forward<T>(val));
+    }
+};
+
+template<typename T, typename... Args>
+struct find_index<0, T, Args...>
+{
+    static int call(std::tuple<Args...> const& t, T&& val) {
+        return compare(std::get<0>(t), val) ? 0 : -1;
+    }
+};
+
+template<typename T, typename ...Args>
+int find_index_helper(std::tuple<Args...>const&t, T&&val){
+    return find_index<sizeof...(Args) - 1, T, Args...>::call(t, std::forward<T>(val));
+}
+
+template<size_t k, typename Tuple>
+typename std::enable_if<k == std::tuple_size<Tuple>::value>::type
+GetArgByIndex(size_t index, Tuple& p){
+    throw std::invalid_argument("ar index out of range");
+}
+
+template<size_t k = 0, typename Tuple>
+typename std::enable_if<k < std::tuple_size<Tuple>::value>::type
+GetArgByIndex(size_t index, Tuple& tp){
+    if (k == index){
+        cout << std::get<k>(tp) << endl;
+    }else{
+        GetArgByIndex<k+1>(index,tp);
+    }
+}
+
+template<typename Arg>
+void GetArgByIndex2(int index, std::tuple<Arg>& tp){
+    cout << std::get<0>(tp) << endl;
+}
+
+template<typename Arg, typename... Args>
+void GetArgByIndex2(int index, std::tuple<Args...>& tp){
+    if (index < 0 || index > std::tuple_size<std::tuple<Arg, Args...>>::value){
+        throw std::invalid_argument("inde x is not valid");
+    }
+    if (index > 0){
+        GetArgByIndex2(index -1, (std::tuple<Args...>)& tp);
+    }else{
+        cout << std::get<0>(tp) << endl;
+    }
+}
+
+void d120::test() {
+    {
+        using Tuple = std::tuple<int,double, string, int>;
+        Tuple tp = std::make_tuple(1,2,"Test",3);
+        const size_t length = std::tuple_size<Tuple>::value;
+        for(size_t i = 0; i< length; i++){
+            GetArgByIndex<0>(i,tp);
+        }
+
+//        GetArgByIndex(4,tp);
+    }
+#ifdef MAIEV
+    {
+        std::tuple<int,double,string>  tp = std::make_tuple(1,1.1, "ok");
+        int index = find_index_helper(tp,"ok");
+        cout << index << endl;
+    }
+    {
+        using T = MakeIndexes<3>::type;
+        T t1;
 //    printx(t1);
 //    cout << typeid(T).name() << endl;
 
-    cout << "--------------------------" << endl;
+        cout << "--------------------------" << endl;
 
-    using sum_t = Sum<int,double,unsigned>;
-    cout << Sum<int,double,unsigned>::value << endl;
-    cout << sum_t::value << endl;
+        using sum_t = Sum<int, double, unsigned>;
+        cout << Sum<int, double, unsigned>::value << endl;
+        cout << sum_t::value << endl;
 
-    expand(1,2,3,4,5);
+        expand(1, 2, 3, 4, 5);
 
-    print(1,2);
-    print(1,2,3);
+        print(1, 2);
+        print(1, 2, 3);
 
-    std::cout << "*************************" << std::endl;
+        std::cout << "*************************" << std::endl;
 
 //    cout << GetLeftSize<int>::value << endl;
 //    cout << GetLeftSizex<double>::value << endl;
@@ -214,6 +295,8 @@ void d120::test() {
     cout << maiev::is_array<int[]>::value << endl;
     cout << maiev::is_array<Key[]>::value << endl;
     cout << std::is_array<Key[]>::value << endl;
+}
+#endif
 
 
     /**

@@ -6,6 +6,8 @@
 #define _COMMON_H
 
 #include <iostream>
+#include <list>
+#include <initializer_list>
 #include <map>
 #include <unordered_map>
 #include <unordered_set>
@@ -24,6 +26,18 @@
 
 #include <bitset>
 #include <utility>
+#include <thread>
+#include <chrono>
+#include <type_traits>
+#include <typeinfo>
+#include <string>
+#include <cstring>
+
+#include <mutex>
+#include <condition_variable>
+#include <functional>
+#include <atomic>
+#include <future>
 
 using namespace std;
 
