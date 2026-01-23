@@ -39,7 +39,15 @@
 #include <atomic>
 #include <future>
 
-using namespace std;
+#include <ctime>
+#include <iomanip>
 
+#include <codecvt>
+#include <locale>
+#include <assert.h>
+#include <numeric>
+#include <array>
+
+using namespace std;
 
 #endif //_COMMON_H

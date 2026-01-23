@@ -11,9 +11,11 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_executable(c11
         main.cpp
+        global.cpp
         d117.cpp
         d119.cpp
         d120.cpp
         d121.cpp
         d122.cpp
+        d123.cpp
         )

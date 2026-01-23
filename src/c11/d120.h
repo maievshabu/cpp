@@ -6,12 +6,6 @@
 #define FINDWORD_D120_H
 #include "common.h"
 
-extern int g_constructCount;
-extern int g_constructCount;
-extern int g_copyConstructCount;
-extern int g_destructCount;
-
-
 namespace d120 {
     void test();
 

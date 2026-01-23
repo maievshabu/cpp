@@ -88,10 +88,10 @@ void d122::test() {
             return 8;
         });
 
-        cout << f1.get() << endl;
+        cout << "f1: " << f1.get() << endl;
 
         std::future<void> f2 = std::async(std::launch::deferred, [](){
-            cout << 8 << endl;
+            cout << "f2: " << 8 << endl;
         });
         f2.wait();
 
@@ -125,7 +125,7 @@ void d122::test() {
      * std::promise 用于包装一个值，将数据和futer绑定起来。方便线程赋值
      * std::package_task用于包装一个可调用对象,将函数和futer半丁起来。以便异步调用
      *
-     * future_statu有如下3种状态:
+     * future_status有如下3种状态:
      * Defered 异步还没开始
      * Ready 异步操作以及完成
      * Timeout 异步操作超时
@@ -143,7 +143,7 @@ void d122::test() {
      * }while(status != std::future_status::ready)
      * 获取future的结果有3种方式get,wait,wait_for
      * get: 等待异步操作结果并返回结果。超时等待结果
-     * wait: 只是的等待异步操作完成，没有返回值
+     * wait: 只是等待异步操作完成，没有返回值
      * wait_for:是超时等待结果
      *
      * std::promise<int> pr;
