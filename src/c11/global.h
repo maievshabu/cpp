@@ -14,4 +14,6 @@ extern int g_copyConstructCount;
 extern int g_destructCount;
 extern std::once_flag flag;
 
+
+
 #endif //C11_GLOBAL_H
